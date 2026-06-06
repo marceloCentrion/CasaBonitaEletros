@@ -1,0 +1,26 @@
+:root {
+  --primary: #07163c;
+}
+
+* {
+  font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif !important;
+}
+
+*::selection {
+  background-color: #3a67ee;
+  color: white;
+}
+
+.no-link {
+  text-decoration: none;
+  width: fit-content;
+  display: flex;
+}
+
+.w-fit-content {
+  width: fit-content !important;
+}
+
+.carousel__slide--clone:first-child {
+  margin-inline-start: 0 !important;
+}

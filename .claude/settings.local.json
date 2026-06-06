@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte\" -not -path \"*/node_modules/*\" -not -path \"*/.nuxt/*\" -not -path \"*/.git/*\" \\\\\\( -name \"*.css\" -o -name \"*.scss\" -o -name \"*.sass\" \\\\\\))",
+      "Bash(ls -lah \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/app\")",
+      "Bash(wc -l \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/app/assets/global.css\")",
+      "Bash(du -sh \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/app/assets/scss\" \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/app/assets/global.css\")",
+      "Bash(ls -lah \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/app/plugins\")",
+      "Bash(find \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/app/plugins\" -type f)",
+      "Bash(ls -lh \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/node_modules/bootstrap/dist/css/\")",
+      "Bash(grep -E \"\\\\.css$|^d\")",
+      "Bash(du -sh \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/node_modules/vuetify/dist/styles\" \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/node_modules/bootstrap\" \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/node_modules/@mdi/font\" \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/node_modules/vue-toastification\")",
+      "Bash(ls -lh \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/node_modules/vuetify\")",
+      "Bash(du -sh \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/node_modules/vuetify\")",
+      "Bash(grep -i \"tailwind\\\\|postcss\" \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte/package.json\")",
+      "Bash(ls -la \"g:\\\\\\\\Centrion\\\\\\\\projetos\\\\\\\\cozinharte\")",
+      "Bash(npm install *)",
+      "Bash(powershell -Command \"Select-String -Path 'app\\\\components\\\\dashboard\\\\TheSalesOverview.vue' -Pattern 'class=\\\\\"mdi'\")",
+      "Bash(npm run *)",
+      "PowerShell(Get-ChildItem -Path \"g:\\\\Centrion\\\\projetos\\\\cozinharte\" -Recurse -Directory | Select-Object -First 30 | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"g:\\\\Centrion\\\\projetos\\\\cozinharte\\\\app\" -Recurse -Directory | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"g:\\\\Centrion\\\\projetos\\\\cozinharte\\\\app\\\\components\" -Recurse -File | Where-Object { $_.Name -match \"\\(produto|product|item|carousel|gallery\\)\" })",
+      "PowerShell(Get-ChildItem -Path \"g:\\\\Centrion\\\\projetos\\\\cozinharte\\\\app\\\\components\" -Recurse -File | Where-Object { $_.Name -match \"\\(carousel|gallery|slider|swiper|image\\)\" })",
+      "PowerShell(Get-ChildItem -Path \"g:\\\\Centrion\\\\projetos\\\\cozinharte\\\\app\\\\components\" -Recurse | Where-Object { $_.PSIsContainer -eq $false } | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"g:\\\\Centrion\\\\projetos\\\\cozinharte\\\\app\" -Recurse -File | Where-Object { $_.Name -match \"\\\\.vue$|\\\\.ts$|\\\\.js$\" } | Where-Object { $_.FullName -match \"\\(carousel|gallery|slider|swiper|image\\)\" } | ForEach-Object { $_.FullName })"
+    ]
+  }
+}
