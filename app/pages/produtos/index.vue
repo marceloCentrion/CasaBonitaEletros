@@ -186,7 +186,7 @@
         </div>
 
         <div
-          v-else-if="!isLoading.isLoading"
+          v-else-if="!produtos.length && !isLoading.isLoading"
           class="cat_empty"
           role="status"
         >
@@ -594,7 +594,7 @@ onMounted(async () => {
     transition: color 0.2s;
 
     &:hover {
-      color: $primary;
+      color: var(--primary);
     }
   }
 
@@ -614,7 +614,7 @@ onMounted(async () => {
   transition: color 0.2s;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -712,13 +712,13 @@ onMounted(async () => {
   white-space: nowrap;
 
   &:hover {
-    border-color: $primary;
-    color: $primary;
+    border-color: var(--primary);
+    color: var(--primary);
   }
 
   &.cat_tab--active {
-    background: $primary;
-    border-color: $primary;
+    background: var(--primary);
+    border-color: var(--primary);
     color: #fff;
   }
 }
@@ -759,8 +759,8 @@ onMounted(async () => {
   }
 
   &.cat_subtab--active {
-    background: $primary;
-    border-color: $primary;
+    background: var(--primary);
+    border-color: var(--primary);
     color: white;
     font-weight: 500;
   }
@@ -798,7 +798,7 @@ onMounted(async () => {
   transition: border-color 0.2s;
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 

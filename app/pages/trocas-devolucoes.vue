@@ -478,7 +478,7 @@ const deliveryCare = [
 }
 
 .td_tag--dark {
-  color: $primary;
+  color: var(--primary);
   border-color: rgba(7, 22, 60, 0.18);
   background: rgba(7, 22, 60, 0.04);
 }
@@ -512,7 +512,7 @@ const deliveryCare = [
   text-decoration: none;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -571,7 +571,7 @@ const deliveryCare = [
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 18px;
   flex-shrink: 0;
@@ -620,7 +620,7 @@ const deliveryCare = [
     color 0.16s;
 
   &:hover {
-    background: $primary;
+    background: var(--primary);
     color: #fff;
   }
 }
@@ -759,7 +759,7 @@ const deliveryCare = [
 
   > span {
     display: block;
-    color: $primary;
+    color: var(--primary);
     font-size: 13px;
     font-weight: 800;
     margin-bottom: 1rem;
@@ -902,8 +902,8 @@ const deliveryCare = [
 }
 
 .td_btn--primary {
-  background: $primary;
-  border: 1px solid $primary;
+  background: var(--primary);
+  border: 1px solid var(--primary);
 }
 
 .td_btn--outline {

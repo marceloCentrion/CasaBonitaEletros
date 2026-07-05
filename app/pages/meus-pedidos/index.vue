@@ -37,7 +37,7 @@
                     :src="pedido.produtos[0].imagens[0].imagem"
                     v-if="pedido.produtos[0].imagens[0]"
                   />
-                  <img id="img_pedido" src="/logo/blackLogo.svg" v-else />
+                  <img id="img_pedido" src="/logo/logo.svg" v-else />
                 </div>
                 <div style="width: 70%; padding-left: 20px">
                   <div>

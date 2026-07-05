@@ -71,6 +71,10 @@
           </picture>
         </slide>
         <template #addons>
+          <navigation v-if="state.banners.length > 1">
+            <template #prev>&lt;</template>
+            <template #next>&gt;</template>
+          </navigation>
           <pagination />
         </template>
       </carousel>
@@ -303,7 +307,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination } from "vue3-carousel";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import services from "@/services/axios";
 import BrandsCarousel from "@/components/Brandscarousel.vue";
 
@@ -564,6 +568,48 @@ function adicionarCarrinho(produto) {
   background: #fff;
 }
 
+.banner_wrapper :deep(.carousel__prev),
+.banner_wrapper :deep(.carousel__next) {
+  width: 58px;
+  height: 84px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 86px;
+  font-weight: 100;
+  line-height: 0.7;
+  opacity: 0.76;
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.45);
+  transform: translateY(-50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  z-index: 4;
+}
+
+.banner_wrapper :deep(.carousel__prev) {
+  left: 28px;
+}
+
+.banner_wrapper :deep(.carousel__next) {
+  right: 28px;
+}
+
+.banner_wrapper :deep(.carousel__prev:hover),
+.banner_wrapper :deep(.carousel__next:hover) {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.banner_wrapper :deep(.carousel__prev:focus-visible),
+.banner_wrapper :deep(.carousel__next:focus-visible) {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
 #section_mais_vendidos {
   width: 100%;
   padding: 60px 0 80px;
@@ -743,13 +789,13 @@ function adicionarCarrinho(produto) {
   transition: all 0.2s;
 
   &:hover {
-    border-color: $primary;
-    color: $primary;
+    border-color: var(--primary);
+    color: var(--primary);
   }
 
   &--active {
-    background: $primary;
-    border-color: $primary;
+    background: var(--primary);
+    border-color: var(--primary);
     color: #fff;
 
     &:hover {
@@ -872,7 +918,7 @@ function adicionarCarrinho(produto) {
     color 0.2s;
 
   &:hover {
-    background: $primary;
+    background: var(--primary);
     color: #fff;
   }
 }
@@ -1172,6 +1218,21 @@ function adicionarCarrinho(produto) {
 }
 
 @media (max-width: 540px) {
+  .banner_wrapper :deep(.carousel__prev),
+  .banner_wrapper :deep(.carousel__next) {
+    width: 42px;
+    height: 62px;
+    font-size: 64px;
+  }
+
+  .banner_wrapper :deep(.carousel__prev) {
+    left: 12px;
+  }
+
+  .banner_wrapper :deep(.carousel__next) {
+    right: 12px;
+  }
+
   .mv_grid {
     grid-template-columns: 1fr;
   }

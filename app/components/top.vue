@@ -7,7 +7,7 @@
 
           <!-- Logo -->
           <NuxtLink to="/" class="header-main__logo">
-            <NuxtImg src="/logo/blackLogo.svg" class="logo" alt="Casa Bonita Eletros" />
+            <NuxtImg src="/logo/logo.svg" class="logo" alt="Casa Bonita Eletros" />
           </NuxtLink>
 
           <!-- Busca centralizada (desktop) -->
@@ -216,7 +216,7 @@
         <div v-if="drawerOpen" class="drawer" role="dialog" aria-modal="true" aria-label="Menu">
           <div class="drawer-header">
             <NuxtLink to="/" @click="drawerOpen = false">
-              <NuxtImg src="/logo/blackLogo.svg" class="drawer-logo" alt="Casa Bonita Eletros" />
+              <NuxtImg src="/logo/logo.svg" class="drawer-logo" alt="Casa Bonita Eletros" />
             </NuxtLink>
             <button class="drawer-close" @click="drawerOpen = false" aria-label="Fechar menu">
               <i class="bi bi-x-lg"></i>
@@ -441,7 +441,7 @@ watch(
   transition: color 0.15s;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -473,7 +473,7 @@ watch(
 
   &:hover {
     background: #cdd1da;
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -488,7 +488,7 @@ watch(
   transition: color 0.15s;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -496,7 +496,7 @@ watch(
   position: absolute;
   top: -7px;
   right: -9px;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 10px;
   font-weight: 600;
@@ -581,7 +581,7 @@ watch(
   }
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -632,10 +632,10 @@ watch(
 
   &:hover {
     background: #f5f5f5;
-    color: $primary;
+    color: var(--primary);
 
     i {
-      color: $primary;
+      color: var(--primary);
     }
   }
 }
@@ -718,7 +718,7 @@ watch(
   &:hover,
   &.router-link-active {
     background: #f5f5f5;
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -733,7 +733,7 @@ watch(
 
   &:hover,
   &.router-link-active {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -792,7 +792,7 @@ watch(
 
   &:hover {
     background: #f5f5f5;
-    color: $primary;
+    color: var(--primary);
   }
 
   &--sair {
@@ -822,7 +822,7 @@ watch(
   padding: 4px;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -830,7 +830,7 @@ watch(
   position: absolute;
   top: -2px;
   right: -4px;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 10px;
   font-weight: 600;
@@ -877,7 +877,7 @@ watch(
     display: flex;
     align-items: center;
 
-    &:hover { color: $primary; }
+    &:hover { color: var(--primary); }
   }
 }
 
@@ -955,7 +955,7 @@ watch(
 
     &:hover {
       background: #f9f9f9;
-      color: $primary;
+      color: var(--primary);
     }
 
     i {
@@ -988,7 +988,7 @@ watch(
 
 .drawer-badge {
   margin-left: auto;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 11px;
   padding: 2px 7px;

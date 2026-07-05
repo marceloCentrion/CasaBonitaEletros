@@ -503,7 +503,7 @@ definePageMeta({ layout: "site" });
   text-decoration: none;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -564,7 +564,7 @@ definePageMeta({ layout: "site" });
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: color.adjust($primary, $lightness: 10%);
+  background: color-mix(in srgb, var(--primary) 90%, white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -627,7 +627,7 @@ definePageMeta({ layout: "site" });
     color 0.15s;
 
   &:hover {
-    background: $primary;
+    background: var(--primary);
     color: $white;
   }
 }
@@ -664,7 +664,7 @@ definePageMeta({ layout: "site" });
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  background: color.adjust($primary, $lightness: 50%);
+  background: color-mix(in srgb, var(--primary) 50%, white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -732,7 +732,7 @@ definePageMeta({ layout: "site" });
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 12px;
   font-weight: 700;
@@ -859,7 +859,7 @@ definePageMeta({ layout: "site" });
 
     i {
       margin-right: 6px;
-      color: $primary;
+      color: var(--primary);
     }
   }
 
@@ -901,7 +901,7 @@ definePageMeta({ layout: "site" });
 
 .policy_cta__icon {
   font-size: 2rem;
-  color: $primary;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
@@ -924,7 +924,7 @@ definePageMeta({ layout: "site" });
   white-space: nowrap;
 
   &--primary {
-    background: $primary;
+    background: var(--primary);
     color: #fff;
 
     &:hover {
@@ -938,8 +938,8 @@ definePageMeta({ layout: "site" });
     background: #fff;
 
     &:hover {
-      border-color: $primary;
-      color: $primary;
+      border-color: var(--primary);
+      color: var(--primary);
     }
   }
 }

@@ -16,9 +16,37 @@ import {
 } from "@mdi/js";
 import "../assets/scss/style.scss";
 
-import { BLUE_THEME } from "../theme/LightTheme";
+import {
+  BLUE_THEME,
+  DEFAULT_COLOR_THEME,
+  RED_THEME,
+  THEME_CSS_VARIABLES,
+  type ColorThemeName,
+} from "../theme/LightTheme";
+
+function isColorThemeName(theme: string): theme is ColorThemeName {
+  return theme in THEME_CSS_VARIABLES;
+}
+
+function applyThemeVariables(themeName: ColorThemeName) {
+  if (!import.meta.client) return;
+
+  const colors = THEME_CSS_VARIABLES[themeName];
+  const root = document.documentElement;
+
+  root.dataset.colorTheme = themeName;
+  root.style.setProperty("--primary", colors.primary);
+  root.style.setProperty("--primary-darken-1", colors.primaryDarken1);
+  root.style.setProperty("--selection", colors.selection);
+}
 
 export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig();
+  const configuredTheme = String(config.public.colorTheme || DEFAULT_COLOR_THEME);
+  const defaultTheme = isColorThemeName(configuredTheme)
+    ? configuredTheme
+    : DEFAULT_COLOR_THEME;
+
   const vuetify = createVuetify({
     icons: {
       defaultSet: "mdi",
@@ -40,9 +68,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       sets: { mdi },
     },
     theme: {
-      defaultTheme: "BLUE_THEME",
+      defaultTheme,
       themes: {
         BLUE_THEME,
+        RED_THEME,
       },
     },
     defaults: {
@@ -72,5 +101,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       },
     },
   });
+
+  applyThemeVariables(defaultTheme);
   nuxtApp.vueApp.use(vuetify);
 });

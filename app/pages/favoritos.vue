@@ -336,7 +336,7 @@ const adicionarCarrinho = (item) => {
 
 .fav_back_btn {
   display: inline-block;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   padding: 10px 24px;
   border-radius: 8px;

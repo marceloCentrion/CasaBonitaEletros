@@ -178,6 +178,7 @@ definePageMeta({ layout: "site" });
 
 const route = useRoute();
 const isLoading = useIsLoading();
+const { empresa, carregarEmpresaSite } = useSiteData();
 
 const combo = ref(null);
 const produtosDetalhes = ref([null, null]);
@@ -218,6 +219,7 @@ const abas = [
 onMounted(async () => {
   isLoading.start();
   try {
+    await carregarEmpresaSite();
     const res = await services.combos.getByIdPublic({ id: route.params.id });
     combo.value = res.data;
 
@@ -248,10 +250,13 @@ function abrirWhatsApp() {
   const p1 = combo.value.produto1.nome;
   const p2 = combo.value.produto2.nome;
   const total = formatPreco(combo.value.valor_total);
+  const numeroBase = empresa.value.whatsapp || empresa.value.telefone || "";
+  const numeroDigits = numeroBase.replace(/\D/g, "");
+  const numero = numeroDigits.startsWith("55") ? numeroDigits : `55${numeroDigits}`;
   const msg = encodeURIComponent(
     `Olá! Tenho interesse no combo: ${p1} + ${p2} - ${total}`,
   );
-  navigateTo(`https://wa.me/5500000000000?text=${msg}`, {
+  navigateTo(numeroDigits ? `https://wa.me/${numero}?text=${msg}` : "/contato", {
     external: true,
     open: { target: "_blank" },
   });
@@ -311,7 +316,7 @@ function abrirWhatsApp() {
     }
 
     &:hover {
-      color: $primary;
+      color: var(--primary);
     }
   }
 
@@ -368,9 +373,9 @@ function abrirWhatsApp() {
     background 0.2s;
 
   &:hover:not(:disabled) {
-    border-color: $primary;
+    border-color: var(--primary);
     color: white;
-    background-color: $primary;
+    background-color: var(--primary);
   }
 
   &:disabled {
@@ -411,7 +416,7 @@ function abrirWhatsApp() {
   }
 
   &.prod_thumb--active {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 
@@ -596,7 +601,7 @@ function abrirWhatsApp() {
   transition: border-color 0.2s;
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 
@@ -635,7 +640,7 @@ function abrirWhatsApp() {
     color: #bbb;
   }
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
     box-shadow: none;
   }
 }
@@ -696,8 +701,8 @@ function abrirWhatsApp() {
   }
 
   &.prod_aba--active {
-    color: $primary;
-    border-bottom-color: $primary;
+    color: var(--primary);
+    border-bottom-color: var(--primary);
   }
 }
 
@@ -752,7 +757,7 @@ function abrirWhatsApp() {
     align-items: center;
     justify-content: center;
     padding: 12px 28px;
-    background: $primary;
+    background: var(--primary);
     color: #fff;
     border: none;
     border-radius: 999px;
@@ -1042,7 +1047,7 @@ function abrirWhatsApp() {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -1078,14 +1083,14 @@ function abrirWhatsApp() {
 .combo_desc_titulo {
   font-size: 2rem;
   font-weight: 700;
-  color: $primary;
+  color: var(--primary);
   margin-bottom: 0.75rem;
 
   a {
     color: inherit;
     text-decoration: none;
     &:hover {
-      color: $primary;
+      color: var(--primary);
     }
   }
 }

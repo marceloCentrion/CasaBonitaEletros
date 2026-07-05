@@ -40,7 +40,7 @@
           >
         </div>
 
-        <img id="img" src="/logo/blackLogo.svg" />
+        <img id="img" src="/logo/logo.svg" />
       </div>
       <div id="div-titulo">
         <p id="titulo">

@@ -1,5 +1,4 @@
 @use "../variables" as *;
-$primary-color: $primary;
 
 /*This is for the logo*/
 .leftSidebar {
@@ -105,7 +104,7 @@ $primary-color: $primary;
     background-color: #181818 !important;
 
     > .v-list-item.v-list-item--active {
-      background: $primary-color;
+      background: var(--primary);
       border: 1px solid rgb(54, 58, 90);
 
       .v-list-item-title,
@@ -123,7 +122,7 @@ $primary-color: $primary;
 
       > .v-list-item--active,
       > .v-list-item--active:hover {
-        background: $primary-color;
+        background: var(--primary);
 
         .v-list-item-title,
         .v-list-item__prepend {
@@ -136,7 +135,7 @@ $primary-color: $primary;
 
         .v-list-item-title,
         .v-list-item__prepend {
-          color: $primary-color !important;
+          color: var(--primary) !important;
         }
       }
 

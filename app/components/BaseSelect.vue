@@ -134,7 +134,7 @@ const selectId = computed(
   }
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 
   &:disabled {
@@ -177,7 +177,7 @@ const selectId = computed(
   transition: color 0.2s;
 
   .base_select:focus ~ & {
-    color: $primary;
+    color: var(--primary);
   }
 }
 

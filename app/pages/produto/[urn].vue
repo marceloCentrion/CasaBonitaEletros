@@ -521,6 +521,7 @@ useHead(() => ({
 
 const isLoading = useIsLoading();
 const checkout = useCheckoutStore();
+const { empresa, carregarEmpresaSite } = useSiteData();
 
 definePageMeta({ layout: "site" });
 
@@ -614,7 +615,7 @@ watch(fullscreenAtivo, (val) => {
 });
 
 onMounted(async () => {
-  await fetchProduto();
+  await Promise.all([fetchProduto(), carregarEmpresaSite()]);
   window.addEventListener('keydown', handleKeydown);
 });
 
@@ -676,11 +677,13 @@ function adicionarCarrinho(p) {
 }
 
 function gerarLinkWhatsApp(p) {
-  const numero = "5500000000000";
+  const numeroBase = empresa.value.whatsapp || empresa.value.telefone || "";
+  const numeroDigits = numeroBase.replace(/\D/g, "");
+  const numero = numeroDigits.startsWith("55") ? numeroDigits : `55${numeroDigits}`;
   const msg = encodeURIComponent(
     `Olá! Tenho interesse no produto: ${p.nome} - ${formatPreco(p.preco)}`,
   );
-  return `https://wa.me/${numero}?text=${msg}`;
+  return numeroDigits ? `https://wa.me/${numero}?text=${msg}` : "/contato";
 }
 
 function abrirWhatsApp(p) {
@@ -762,7 +765,7 @@ async function calcularFrete() {
     }
 
     &:hover {
-      color: $primary;
+      color: var(--primary);
     }
   }
 
@@ -819,9 +822,9 @@ async function calcularFrete() {
     background 0.2s;
 
   &:hover:not(:disabled) {
-    border-color: $primary;
+    border-color: var(--primary);
     color: white;
-    background-color: $primary;
+    background-color: var(--primary);
   }
 
   &:disabled {
@@ -862,7 +865,7 @@ async function calcularFrete() {
   }
 
   &.prod_thumb--active {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 
@@ -928,8 +931,8 @@ async function calcularFrete() {
 
   &:hover {
     background: #fff;
-    color: $primary;
-    border-color: $primary;
+    color: var(--primary);
+    border-color: var(--primary);
   }
 }
 
@@ -1203,7 +1206,7 @@ async function calcularFrete() {
   transition: border-color 0.2s;
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 
@@ -1242,7 +1245,7 @@ async function calcularFrete() {
     color: #bbb;
   }
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
     box-shadow: none;
   }
 }
@@ -1303,8 +1306,8 @@ async function calcularFrete() {
   }
 
   &.prod_aba--active {
-    color: $primary;
-    border-bottom-color: $primary;
+    color: var(--primary);
+    border-bottom-color: var(--primary);
   }
 }
 
@@ -1359,7 +1362,7 @@ async function calcularFrete() {
     align-items: center;
     justify-content: center;
     padding: 12px 28px;
-    background: $primary;
+    background: var(--primary);
     color: #fff;
     border: none;
     border-radius: 999px;
@@ -1376,11 +1379,11 @@ async function calcularFrete() {
 
     &--outline {
       background: transparent;
-      color: $primary;
-      border: 1.5px solid $primary;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
 
       &:hover {
-        background: $primary;
+        background: var(--primary);
         color: #fff;
         opacity: 1;
       }

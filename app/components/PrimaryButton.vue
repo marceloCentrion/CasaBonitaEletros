@@ -8,7 +8,7 @@
 @use "@/assets/scss/variables" as *;
 
 .primary-btn {
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   border: none;
   cursor: pointer;
@@ -20,7 +20,7 @@
 
   &:hover {
     background-color: white;
-    color: $primary;
+    color: var(--primary);
     border-color: white;
   }
 }

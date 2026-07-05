@@ -58,13 +58,19 @@
         </div>
       </div>
     </div>
-    <div class="div_social_color">
+    <div
+      v-if="state.empresa.facebook || state.empresa.instagram || state.empresa.twitter"
+      class="div_social_color"
+    >
       <h3>Siga-nos nas redes sociais:</h3>
-      <a :href="state.empresa.instagram" target="_blank"
+      <a v-if="state.empresa.instagram" :href="state.empresa.instagram" target="_blank"
         ><i class="bi bi-instagram social-icon"></i
       ></a>
-      <a :href="state.empresa.instagram" target="_blank">
+      <a v-if="state.empresa.facebook" :href="state.empresa.facebook" target="_blank">
         <i class="bi bi-facebook social-icon"></i>
+      </a>
+      <a v-if="state.empresa.twitter" :href="state.empresa.twitter" target="_blank">
+        <i class="bi bi-twitter social-icon"></i>
       </a>
     </div>
   </div>

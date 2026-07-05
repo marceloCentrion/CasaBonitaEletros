@@ -39,7 +39,7 @@ import usuarios from './usuarios';
 const API_ENVS = {
   production: '',
   development: '',
-   local: 'https://api.cozinharteeletros.com.br/api',
+   local: 'https://backend.casabonitaeletros.com.br/api',
   cep: 'http://viacep.com.br/ws/',
   MelhorEnvio: 'https://melhorenvio.com.br/api'
 }

@@ -52,6 +52,12 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    public: {
+      colorTheme: process.env.NUXT_PUBLIC_COLOR_THEME || "RED_THEME",
+    },
+  },
+
   app: {
     head: {
       link: [

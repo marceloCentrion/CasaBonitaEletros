@@ -26,7 +26,13 @@
                       style="background-color: var(--primary); color: #fff"
                       scope="col"
                     >
-                      Email
+                      Contato
+                    </th>
+                    <th
+                      style="background-color: var(--primary); color: #fff"
+                      scope="col"
+                    >
+                      Preferencia
                     </th>
                     <th
                       style="background-color: var(--primary); color: #fff"
@@ -39,7 +45,8 @@
                 <tbody>
                   <tr v-for="letter in state.newsletter" :key="letter.id">
                     <td>{{ letter.id }}</td>
-                    <td>{{ letter.email }}</td>
+                    <td>{{ contatoNewsletter(letter) }}</td>
+                    <td>{{ preferenciaNewsletter(letter) }}</td>
                     <td>
                       <!-- <button title="Alterar" class="btn btn-primary">
                         <i class="bi bi-pencil-fill"></i>
@@ -112,9 +119,41 @@ export default {
         }
       }
     }
+    function formatarTelefone(valor) {
+      const numeros = String(valor || "").replace(/\D/g, "");
+      if (numeros.length === 11) {
+        return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7)}`;
+      }
+      if (numeros.length === 10) {
+        return `(${numeros.slice(0, 2)}) ${numeros.slice(2, 6)}-${numeros.slice(6)}`;
+      }
+      return valor || "-";
+    }
+
+    function contatoNewsletter(letter) {
+      return letter.whatsapp
+        ? formatarTelefone(letter.whatsapp)
+        : letter.telefone
+          ? formatarTelefone(letter.telefone)
+          : letter.email || "-";
+    }
+
+    function preferenciaNewsletter(letter) {
+      const preferencia = letter.preferencia_contato || letter.tipo || "";
+      if (preferencia.toLowerCase() === "whatsapp" || letter.whatsapp || letter.telefone) {
+        return "WhatsApp";
+      }
+      if (preferencia.toLowerCase() === "email" || letter.email) {
+        return "E-mail";
+      }
+      return "-";
+    }
+
     return {
       state,
       deletarLetter,
+      contatoNewsletter,
+      preferenciaNewsletter,
     };
   },
 };

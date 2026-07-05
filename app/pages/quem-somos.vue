@@ -342,7 +342,7 @@ const categories = [
   border: 1px solid rgba(7, 22, 60, 0.18);
   border-radius: 999px;
   padding: 6px 14px;
-  color: $primary;
+  color: var(--primary);
   background: rgba(7, 22, 60, 0.04);
   font-size: 12px;
   font-weight: 700;
@@ -419,8 +419,8 @@ const categories = [
   color: #111;
 
   &:hover {
-    background: $primary;
-    border-color: $primary;
+    background: var(--primary);
+    border-color: var(--primary);
     color: #fff;
   }
 }
@@ -438,8 +438,8 @@ const categories = [
 }
 
 .qs_btn--primary {
-  background: $primary;
-  border: 1px solid $primary;
+  background: var(--primary);
+  border: 1px solid var(--primary);
   color: #fff;
 
   &:hover {
@@ -517,7 +517,7 @@ const categories = [
   }
 
   dt {
-    color: $primary;
+    color: var(--primary);
     font-size: 34px;
     line-height: 1;
     font-weight: 800;
@@ -601,7 +601,7 @@ const categories = [
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $primary;
+    color: var(--primary);
     background: #fff;
     border: 1px solid #e2e5ec;
     font-size: 18px;
@@ -677,7 +677,7 @@ const categories = [
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 18px;
 }
@@ -725,7 +725,7 @@ const categories = [
 
   span {
     display: block;
-    color: $primary;
+    color: var(--primary);
     font-size: 13px;
     font-weight: 800;
     margin-bottom: 1rem;

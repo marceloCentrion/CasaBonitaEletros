@@ -95,6 +95,11 @@ const props = defineProps({
 
 const carrinho = useCarrinhoStore();
 const adicionado = ref(false);
+const { empresa, carregarEmpresaSite } = useSiteData();
+
+onMounted(() => {
+  carregarEmpresaSite();
+});
 
 function formatPreco(valor) {
   return new Intl.NumberFormat("pt-BR", {
@@ -117,11 +122,13 @@ function handleAdicionarCarrinho() {
 }
 
 const linkWhatsApp = computed(() => {
-  const numero = "5500000000000";
+  const numeroBase = empresa.value.whatsapp || empresa.value.telefone || "";
+  const numeroDigits = numeroBase.replace(/\D/g, "");
+  const numero = numeroDigits.startsWith("55") ? numeroDigits : `55${numeroDigits}`;
   const msg = encodeURIComponent(
     `Olá! Tenho interesse no produto: ${props.produto.nome} - ${formatPreco(props.produto.preco)}`,
   );
-  return `https://wa.me/${numero}?text=${msg}`;
+  return numeroDigits ? `https://wa.me/${numero}?text=${msg}` : "/contato";
 });
 
 import { useFavoritosStore } from "@/stores/favoritos";
@@ -167,8 +174,8 @@ function handleFavoritar() {
 
   &:hover {
     background: #f0f2fd;
-    color: $primary;
-    border: 1px solid $primary;
+    color: var(--primary);
+    border: 1px solid var(--primary);
   }
 }
 
@@ -221,7 +228,7 @@ function handleFavoritar() {
   overflow: hidden;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -234,7 +241,7 @@ function handleFavoritar() {
 
 .mv_preco_pix {
   font-size: 13px;
-  color: $primary;
+  color: var(--primary);
   font-weight: 600;
   margin-bottom: 0.3rem;
 }
@@ -255,7 +262,7 @@ function handleFavoritar() {
 .mv_frete {
   font-size: 12px;
   font-weight: 600;
-  color: $primary;
+  color: var(--primary);
 }
 
 .mv_actions {
@@ -267,7 +274,7 @@ function handleFavoritar() {
 
 .mv_btn_cart {
   flex: 1;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -292,7 +299,7 @@ function handleFavoritar() {
   }
 
   &--adicionado {
-    background: $primary;
+    background: var(--primary);
     cursor: default;
     opacity: 1 !important;
   }
@@ -318,7 +325,7 @@ function handleFavoritar() {
 
   &:hover {
     background: #f0f2fd;
-    border-color: $primary;
+    border-color: var(--primary);
   }
 
   i {

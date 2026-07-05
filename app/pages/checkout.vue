@@ -740,7 +740,7 @@ onMounted(async () => {
       font-size: 13px;
     }
     &:hover {
-      color: $primary;
+      color: var(--primary);
     }
   }
   li[aria-current="page"] {
@@ -770,7 +770,7 @@ onMounted(async () => {
   gap: 0.5rem;
   i {
     font-size: 1.5rem;
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -797,7 +797,7 @@ onMounted(async () => {
   padding: 14px 20px;
   i {
     font-size: 1rem;
-    color: $primary;
+    color: var(--primary);
   }
   h2 {
     font-size: 1rem;
@@ -879,11 +879,11 @@ onMounted(async () => {
     border-color 0.2s,
     background 0.2s;
   &:hover {
-    border-color: $primary;
+    border-color: var(--primary);
     background: #fffbf2;
   }
   &.endereco_item--ativo {
-    border-color: $primary;
+    border-color: var(--primary);
     background: #f2f7ff;
   }
 }
@@ -907,7 +907,7 @@ onMounted(async () => {
   transition: border-color 0.2s;
   .endereco_item--ativo &,
   .pgto_opcao--ativo & {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 
@@ -915,7 +915,7 @@ onMounted(async () => {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: $primary;
+  background: var(--primary);
 }
 
 .endereco_info {
@@ -931,7 +931,7 @@ onMounted(async () => {
 }
 
 .tipo--principal {
-  color: $primary;
+  color: var(--primary);
 }
 .tipo--secundario {
   color: #888;
@@ -961,7 +961,7 @@ onMounted(async () => {
   gap: 6px;
   background: none;
   border: none;
-  color: $primary;
+  color: var(--primary);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -993,13 +993,13 @@ onMounted(async () => {
   &:hover {
     color: #111;
     i {
-      color: $primary;
+      color: var(--primary);
     }
   }
   &.pgto_opcao--ativo {
     color: #111;
     i {
-      color: $primary;
+      color: var(--primary);
     }
   }
 }
@@ -1048,7 +1048,7 @@ onMounted(async () => {
     color: #bbb;
   }
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
   &--erro {
     border-color: #e74c3c;
@@ -1080,7 +1080,7 @@ onMounted(async () => {
   width: 100%;
   transition: border-color 0.2s;
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 
@@ -1103,7 +1103,7 @@ onMounted(async () => {
 .btn_finalizar {
   height: 44px;
   width: 100%;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 8px;

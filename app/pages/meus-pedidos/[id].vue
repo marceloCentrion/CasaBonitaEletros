@@ -83,7 +83,7 @@
                   />
                 </div>
                 <div v-else>
-                  <img id="img-table" src="/logo/blackLogo.svg" />
+                  <img id="img-table" src="/logo/logo.svg" />
                 </div>
 
                 <div>

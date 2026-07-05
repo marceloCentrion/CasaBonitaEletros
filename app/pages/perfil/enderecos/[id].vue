@@ -525,7 +525,7 @@ onMounted(() => {
     transition: color 0.2s;
 
     &:hover {
-      color: $primary;
+      color: var(--primary);
     }
   }
 
@@ -552,7 +552,7 @@ onMounted(() => {
 
   i {
     font-size: 1.5rem;
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -575,7 +575,7 @@ onMounted(() => {
 
   i {
     font-size: 1rem;
-    color: $primary;
+    color: var(--primary);
   }
 
   h2 {
@@ -662,7 +662,7 @@ onMounted(() => {
   }
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 
   &--erro {
@@ -696,7 +696,7 @@ onMounted(() => {
   transition: border-color 0.2s;
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 
   &.form_input--erro {
@@ -762,7 +762,7 @@ onMounted(() => {
 
 .cep_link {
   font-size: 11px;
-  color: $primary;
+  color: var(--primary);
 
   text-decoration: none;
   margin-top: 1px;
@@ -841,8 +841,8 @@ onMounted(() => {
   }
 
   &--checked {
-    background: $primary;
-    border-color: $primary;
+    background: var(--primary);
+    border-color: var(--primary);
 
     i {
       opacity: 1;
@@ -894,7 +894,7 @@ onMounted(() => {
   height: 42px;
   padding: 0 28px;
 
-  background: $primary;
+  background: var(--primary);
   color: #fff;
 
   border: none;

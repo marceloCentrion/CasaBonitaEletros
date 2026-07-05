@@ -31,7 +31,7 @@ defineEmits(["click"]);
   justify-content: center;
   width: 100%;
   padding: 13px;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   text-decoration: none;
   border: none;

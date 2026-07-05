@@ -95,6 +95,27 @@
               :isInvalid="!!state.errors.telefone"
               errorMessage="Preencha este campo"
             />
+            <label class="same_phone_check mt-2" for="whatsappMesmoTelefone">
+              <input
+                id="whatsappMesmoTelefone"
+                v-model="state.whatsappMesmoTelefone"
+                type="checkbox"
+              />
+              Usar este numero tambem como WhatsApp
+            </label>
+          </div>
+          <div v-if="!state.whatsappMesmoTelefone" class="col-md-4">
+            <BaseInput
+              id="whatsapp"
+              label="WhatsApp Empresa"
+              v-model="state.whatsapp"
+              placeholder="Insira o WhatsApp:"
+              v-maska
+              data-maska="['(##) ####-####', '(##) #####-####']"
+              maxlength="15"
+              :isInvalid="!!state.errors.whatsapp"
+              errorMessage="Preencha este campo"
+            />
           </div>
           <div class="col-md-4">
             <BaseInput
@@ -125,7 +146,7 @@
 </template>
 
 <script>
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, watch } from "vue";
 import services from "@/services/axios";
 import BaseInput from "@/components/BaseInput.vue";
 import SecButton from "~/components/SecButton.vue";
@@ -149,6 +170,8 @@ export default {
       cidade: "",
       estado: "",
       telefone: "",
+      whatsapp: "",
+      whatsappMesmoTelefone: false,
       facebook: "",
       instagram: "",
       twitter: "",
@@ -159,6 +182,11 @@ export default {
     });
     const authStore = useAuthStore();
     const token = authStore.token;
+
+    function normalizarTelefone(valor) {
+      return String(valor || "").replace(/\D/g, "");
+    }
+
     async function fetchEmpresa() {
       try {
         const { data } = await services.empresa.getEmpresa({ token });
@@ -169,6 +197,10 @@ export default {
         state.cidade = data.cidade_uf;
         state.estado = data.estado;
         state.telefone = data.telefone;
+        state.whatsapp = data.whatsapp || data.telefone || "";
+        state.whatsappMesmoTelefone =
+          !data.whatsapp ||
+          normalizarTelefone(data.whatsapp) === normalizarTelefone(data.telefone);
         state.facebook = data.facebook;
         state.instagram = data.instagram;
         state.twitter = data.twitter;
@@ -180,13 +212,37 @@ export default {
         toast.error("Erro ao carregar dados da empresa.");
       }
     }
+
+    watch(
+      () => state.telefone,
+      (telefone) => {
+        if (state.whatsappMesmoTelefone) {
+          state.whatsapp = telefone;
+        }
+      },
+    );
+
+    watch(
+      () => state.whatsappMesmoTelefone,
+      (usarMesmoNumero) => {
+        if (usarMesmoNumero) {
+          state.whatsapp = state.telefone;
+          delete state.errors.whatsapp;
+        }
+      },
+    );
+
     async function upEmpresa() {
       state.errors = {};
       let erro = false;
 
+      if (state.whatsappMesmoTelefone) {
+        state.whatsapp = state.telefone;
+      }
+
       const obrigatorios = [
-        "facebook", "instagram", "endereco", "numero",
-        "cidade", "telefone", "cep", "email", "sobre_nos"
+        "endereco", "numero",
+        "cidade", "telefone", "whatsapp", "cep", "email", "sobre_nos"
       ];
 
       obrigatorios.forEach((campo) => {
@@ -212,6 +268,7 @@ export default {
         cidade_uf: state.cidade,
         estado: state.estado,
         telefone: state.telefone,
+        whatsapp: state.whatsapp,
         facebook: state.facebook,
         instagram: state.instagram,
         twitter: state.twitter,
@@ -268,5 +325,21 @@ textarea:focus {
   border: solid 2px #000;
   border-radius: 10px;
   background-color: #fff;
+}
+
+.same_phone_check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+}
+
+.same_phone_check input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 </style>

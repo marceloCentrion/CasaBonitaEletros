@@ -45,11 +45,11 @@ defineEmits(["click"]);
   }
 
   &--primary {
-    color: $primary;
-    border-color: $primary;
+    color: var(--primary);
+    border-color: var(--primary);
 
     &:hover {
-      background: $primary;
+      background: var(--primary);
       color: #fff;
     }
   }

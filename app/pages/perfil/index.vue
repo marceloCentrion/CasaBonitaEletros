@@ -611,7 +611,7 @@ onMounted(async () => {
       font-size: 13px;
     }
     &:hover {
-      color: $primary;
+      color: var(--primary);
     }
   }
   li[aria-current="page"] {
@@ -658,7 +658,7 @@ onMounted(async () => {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: $primary;
+  background: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -729,7 +729,7 @@ onMounted(async () => {
     background: #f5f5f5;
     color: #111;
     i {
-      color: $primary;
+      color: var(--primary);
     }
   }
 
@@ -737,10 +737,10 @@ onMounted(async () => {
     background: #f0f4ff;
     color: #111;
     font-weight: 600;
-    border-left: 3px solid $primary;
+    border-left: 3px solid var(--primary);
     padding-left: 17px;
     i {
-      color: $primary;
+      color: var(--primary);
     }
   }
 }
@@ -784,7 +784,7 @@ onMounted(async () => {
 
   i {
     font-size: 1rem;
-    color: $primary;
+    color: var(--primary);
   }
   h2 {
     font-size: 1rem;
@@ -889,7 +889,7 @@ onMounted(async () => {
     color: #bbb;
   }
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
   &--erro {
     border-color: #e74c3c;
@@ -911,7 +911,7 @@ onMounted(async () => {
 .btn_salvar {
   height: 40px;
   padding: 0 24px;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -955,7 +955,7 @@ onMounted(async () => {
   gap: 4px;
   transition: border-color 0.2s;
   &:hover {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 
@@ -1007,7 +1007,7 @@ onMounted(async () => {
     color 0.15s,
     background 0.15s;
   &:hover {
-    color: $primary;
+    color: var(--primary);
     background: #f5f5f5;
   }
 }
@@ -1070,11 +1070,11 @@ onMounted(async () => {
     background 0.15s;
 
   &:hover {
-    border-color: $primary;
+    border-color: var(--primary);
     background: #fafbff;
   }
   &:focus-visible {
-    outline: 2px solid $primary;
+    outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
 }
@@ -1129,7 +1129,7 @@ onMounted(async () => {
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: $primary;
+  color: var(--primary);
   font-weight: 500;
   white-space: nowrap;
   i {
@@ -1208,7 +1208,7 @@ onMounted(async () => {
 
     &--ativo {
       border-left: none;
-      border-bottom: 3px solid $primary;
+      border-bottom: 3px solid var(--primary);
       padding-left: 12px;
     }
   }

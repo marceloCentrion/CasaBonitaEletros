@@ -1046,7 +1046,7 @@ async function handleCadastro() {
   transition: all 0.2s;
 
   &--active {
-    background: $primary;
+    background: var(--primary);
     color: #fff;
     font-weight: 600;
   }
@@ -1145,7 +1145,7 @@ async function handleCadastro() {
   }
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 
   &--invalid {
@@ -1221,7 +1221,7 @@ async function handleCadastro() {
 }
 
 .cad_radio_input {
-  accent-color: $primary;
+  accent-color: var(--primary);
   width: 16px;
   height: 16px;
   cursor: pointer;
@@ -1246,7 +1246,7 @@ async function handleCadastro() {
   width: fit-content;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
     text-decoration: underline;
   }
 }
@@ -1274,7 +1274,7 @@ async function handleCadastro() {
 }
 
 .auth_switch_link {
-  color: $primary;
+  color: var(--primary);
   font-weight: 600;
   text-decoration: none;
 

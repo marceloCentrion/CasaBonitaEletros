@@ -1,5 +1,5 @@
 <template>
-  <span class="loader"> C<span class="o-loader"></span>zinharte </span>
+  <span class="loader">Casa B<span class="o-loader" aria-label="o"></span>nita Eletros</span>
 </template>
 
 <style scoped lang="scss">
@@ -11,14 +11,15 @@
   font-size: 48px;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
-  color: $primary;
+  color: var(--primary);
 
   .o-loader {
     position: relative;
     display: inline-block;
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
+    width: 0.66em;
+    height: 0.66em;
+    margin: 0 0.02em;
+    vertical-align: -0.05em;
   }
 
   .o-loader::before {
@@ -26,7 +27,7 @@
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    border: 5px solid $primary;
+    border: 5px solid var(--primary);
     border-bottom-color: white;
     box-sizing: border-box;
     animation: rotation 0.6s linear infinite;

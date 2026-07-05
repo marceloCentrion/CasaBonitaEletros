@@ -23,7 +23,7 @@
         <div class="auth_heading text-center">
           <NuxtLink to="/">
             <NuxtImg
-              src="/logo/blackLogo.svg"
+              src="/logo/logo.svg"
               alt="Logo Casa Bonita Eletros"
               style="cursor: pointer; max-width: 400px"
               class="p-5"
@@ -276,7 +276,7 @@ async function logar() {
 .auth_btn {
   width: 100%;
   padding: 12px;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 14px;
   font-weight: 600;

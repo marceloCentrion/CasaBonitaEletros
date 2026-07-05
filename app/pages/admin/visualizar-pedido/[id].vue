@@ -506,7 +506,7 @@ td {
 }
 
 .btn_ver {
-  background: #07163C;
+  background: var(--primary);
   margin-bottom: 0;
   color: #fff;
 }

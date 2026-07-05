@@ -8,7 +8,7 @@
             class="footer_logo"
             aria-label="Casa Bonita Eletros - ir para home"
           >
-            <NuxtImg src="/logo/blackLogo.svg" style="max-width: 140px" />
+            <NuxtImg src="/logo/logo.svg" style="max-width: 140px" />
           </NuxtLink>
           <p class="footer_slogan">
             Tecnologia, design e sofisticação para transformar sua cozinha.
@@ -16,12 +16,23 @@
           <address class="footer_contact">
             <a
               v-if="state.empresa.telefone"
-              :href="`tel:+55${state.empresa.telefone}`"
+              :href="phoneHref"
               class="footer_contact_item"
               aria-label="Telefone"
             >
               <i class="bi bi-telephone" aria-hidden="true"></i>
               <span>{{ state.empresa.telefone }}</span>
+            </a>
+            <a
+              v-if="mostrarWhatsappRodape"
+              :href="whatsappHref"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer_contact_item"
+              aria-label="WhatsApp"
+            >
+              <i class="bi bi-whatsapp" aria-hidden="true"></i>
+              <span>{{ state.empresa.whatsapp }}</span>
             </a>
             <a
               v-if="state.empresa.email"
@@ -32,15 +43,30 @@
               <i class="bi bi-envelope" aria-hidden="true"></i>
               <span>{{ state.empresa.email }}</span>
             </a>
-            <p v-if="state.empresa.endereco" class="footer_contact_item footer_address">
+            <a
+              v-if="state.empresa.endereco"
+              :href="googleMapsHref"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer_contact_item footer_address"
+              aria-label="Abrir endereco no Google Maps"
+            >
               <i class="bi bi-geo-alt" aria-hidden="true"></i>
-              <span>{{ state.empresa.endereco }}</span>
-            </p>
+              <div class="footer_address_text">
+                <span
+                  >{{ state.empresa.endereco }}<template v-if="state.empresa.numero"
+                    >, {{ state.empresa.numero }}</template
+                  ></span
+                >
+                <span v-if="state.empresa.cep">CEP: {{ state.empresa.cep }}</span>
+                <span v-if="state.empresa.cidade_uf">{{ state.empresa.cidade_uf }}</span>
+              </div>
+            </a>
           </address>
         </div>
 
         <nav class="footer_nav footer_nav--grupos" aria-labelledby="footer_cat_heading">
-          <h3 class="footer_nav_title" id="footer_cat_heading">Grupos</h3>
+          <h3 class="footer_nav_title" id="footer_cat_heading">Categorias</h3>
           <ul class="footer_nav_list">
             <li v-for="grupo in state.grupos" :key="grupo.urn">
               <NuxtLink
@@ -143,6 +169,48 @@ const state = reactive({
   empresa,
 });
 
+const telefoneDigits = computed(() =>
+  (state.empresa.telefone || "").replace(/\D/g, ""),
+);
+
+const whatsappDigits = computed(() =>
+  (state.empresa.whatsapp || "").replace(/\D/g, ""),
+);
+
+const phoneHref = computed(() => {
+  if (!telefoneDigits.value) return "/contato";
+  const numero = telefoneDigits.value.startsWith("55")
+    ? telefoneDigits.value
+    : `55${telefoneDigits.value}`;
+  return `tel:+${numero}`;
+});
+
+const mostrarWhatsappRodape = computed(() =>
+  Boolean(whatsappDigits.value && whatsappDigits.value !== telefoneDigits.value),
+);
+
+const whatsappHref = computed(() => {
+  if (!whatsappDigits.value) return "/contato";
+  const numero = whatsappDigits.value.startsWith("55")
+    ? whatsappDigits.value
+    : `55${whatsappDigits.value}`;
+  const message = encodeURIComponent(
+    "Olá! Vim através do site Casa Bonita Eletros e gostaria de atendimento pelo WhatsApp.",
+  );
+  return `https://wa.me/${numero}?text=${message}`;
+});
+
+const googleMapsHref = computed(() => {
+  const partes = [
+    state.empresa.endereco,
+    state.empresa.numero,
+    state.empresa.cidade_uf,
+    state.empresa.cep ? `CEP ${state.empresa.cep}` : "",
+  ].filter(Boolean);
+
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(partes.join(", "))}`;
+});
+
 function onIgImgError(e) {
   if (import.meta.client && e?.target)
     e.target.src = "/placeholder-default.png";
@@ -216,13 +284,19 @@ onMounted(() => {
     flex-shrink: 0;
   }
 
-  &:hover:not(.footer_address) {
-    color: $primary;
+  &:hover {
+    color: var(--primary);
   }
 }
 
 .footer_address {
-  cursor: default;
+  align-items: flex-start;
+}
+
+.footer_address_text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .footer_nav_title {
@@ -248,7 +322,7 @@ onMounted(() => {
     transition: color 0.2s;
 
     &:hover {
-      color: $primary;
+      color: var(--primary);
     }
   }
 }

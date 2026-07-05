@@ -103,13 +103,13 @@ const paginas = computed(() => {
 }
 .pag-btn:hover:not(:disabled) {
   background: #f5f5f5;
-  border: 1px solid $primary;
+  border: 1px solid var(--primary);
   color: black;
 }
 .pag-btn.active {
-  background: $primary;
+  background: var(--primary);
   color: #fff;
-  border-color: $primary;
+  border-color: var(--primary);
   font-weight: 500;
 }
 .pag-btn:disabled {
@@ -121,7 +121,7 @@ const paginas = computed(() => {
   background: transparent;
 }
 .pag-arrow {
-  background-color: $primary;
+  background-color: var(--primary);
   color: white;
   line-height: 1;
 }

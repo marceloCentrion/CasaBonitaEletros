@@ -427,7 +427,7 @@ function toggleQuestion(id) {
 }
 
 .faq_tag--dark {
-  color: $primary;
+  color: var(--primary);
   border-color: rgba(7, 22, 60, 0.18);
   background: rgba(7, 22, 60, 0.04);
 }
@@ -461,7 +461,7 @@ function toggleQuestion(id) {
   text-decoration: none;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -551,7 +551,7 @@ function toggleQuestion(id) {
     cursor: pointer;
 
     &:hover {
-      background: $primary;
+      background: var(--primary);
       color: #fff;
     }
   }
@@ -581,8 +581,8 @@ function toggleQuestion(id) {
 
   &:hover,
   &--active {
-    background: $primary;
-    border-color: $primary;
+    background: var(--primary);
+    border-color: var(--primary);
     color: #fff;
   }
 }
@@ -633,11 +633,11 @@ function toggleQuestion(id) {
     color 0.16s;
 
   i {
-    color: $primary;
+    color: var(--primary);
   }
 
   &:hover {
-    background: $primary;
+    background: var(--primary);
     color: #fff;
 
     i {
@@ -710,7 +710,7 @@ function toggleQuestion(id) {
   align-items: center;
   justify-content: center;
   background: #f3f5f8;
-  color: $primary;
+  color: var(--primary);
   font-size: 18px;
 }
 
@@ -745,7 +745,7 @@ function toggleQuestion(id) {
 
   .faq_item--open & {
     transform: rotate(180deg);
-    background: $primary;
+    background: var(--primary);
     color: #fff;
   }
 }
@@ -787,7 +787,7 @@ function toggleQuestion(id) {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: $primary;
+    background: var(--primary);
     animation: faqPulse 0.75s ease-in-out infinite alternate;
   }
 
@@ -819,7 +819,7 @@ function toggleQuestion(id) {
   text-align: center;
 
   > i {
-    color: $primary;
+    color: var(--primary);
     font-size: 30px;
   }
 
@@ -846,7 +846,7 @@ function toggleQuestion(id) {
   min-height: 42px;
   border-radius: 8px;
   padding: 10px 18px;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 13px;
   font-weight: 800;
@@ -904,8 +904,8 @@ function toggleQuestion(id) {
 }
 
 .faq_btn--primary {
-  background: $primary;
-  border: 1px solid $primary;
+  background: var(--primary);
+  border: 1px solid var(--primary);
   color: #fff;
 
   &:hover {

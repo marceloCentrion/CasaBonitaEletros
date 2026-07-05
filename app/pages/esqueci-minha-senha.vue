@@ -12,7 +12,7 @@
                     <div class="div_img_logo">
                       <img
                         alt="Casa Bonita Eletros"
-                        src="/logo/blackLogo.svg"
+                        src="/logo/logo.svg"
                       />
                     </div>
                   </div>

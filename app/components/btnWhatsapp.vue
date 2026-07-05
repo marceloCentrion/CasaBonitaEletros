@@ -1,9 +1,14 @@
 <template>
-  <div>
-    <NuxtLink :to="whatsappLink" target="_blank">
-      <!-- <img id="whatsapp" src="/public/images/site/whatsapp.png" alt="whatsapp" /> -->
-    </NuxtLink>
-  </div>
+  <a
+    :href="whatsappLink"
+    class="whatsapp_float"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Atendimento pelo WhatsApp"
+    title="Atendimento pelo WhatsApp"
+  >
+    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+  </a>
 </template>
 
 <script setup>
@@ -14,22 +19,70 @@ onMounted(() => {
 });
 
 const whatsappLink = computed(() => {
-  const telefone = empresa.value.telefone || "";
+  const numeroAtendimento = empresa.value.whatsapp || empresa.value.telefone || "";
+  const cleanedNumber = numeroAtendimento.replace(/\D/g, "");
+  const numeroComPais = cleanedNumber.startsWith("55")
+    ? cleanedNumber
+    : `55${cleanedNumber}`;
+  const message = encodeURIComponent(
+    "Olá! Vim através do site Casa Bonita Eletros e gostaria de atendimento pelo WhatsApp."
+  );
 
-  const cleanedNumber = telefone.replace(/[()\-\s]/g, "");
-
-  return `https://wa.me/${cleanedNumber}?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20M%C3%ADstica%20e%20gostaria%20de%20obter%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20compra%20de%20produtos%20e%20do%20site.`;
+  return cleanedNumber
+    ? `https://wa.me/${numeroComPais}?text=${message}`
+    : "/contato";
 });
 </script>
 
 <style scoped>
-#whatsapp {
-  width: 70px;
-  height: 70px;
+.whatsapp_float {
   position: fixed;
-  right: 50px;
-  bottom: 10px;
-  opacity: 0.5;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1200;
+  width: 58px;
+  height: 58px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.34);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.whatsapp_float i {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.whatsapp_float:hover {
+  background: #20bd5a;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(37, 211, 102, 0.42);
+}
+
+.whatsapp_float:focus-visible {
+  outline: 3px solid rgba(37, 211, 102, 0.35);
+  outline-offset: 4px;
+}
+
+@media (max-width: 540px) {
+  .whatsapp_float {
+    right: 16px;
+    bottom: 16px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .whatsapp_float i {
+    font-size: 27px;
+  }
 }
 </style>
-

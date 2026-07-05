@@ -9,8 +9,8 @@
 
 button {
   background: transparent;
-  border: 2px solid $primary;
-  color: $primary;
+  border: 2px solid var(--primary);
+  color: var(--primary);
   font-size: 14px;
   font-weight: 500;
   padding: 14px 24px;
@@ -27,7 +27,7 @@ button {
   }
 
   &:hover {
-    background-color: $primary;
+    background-color: var(--primary);
     color: white;
   }
 }

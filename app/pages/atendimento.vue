@@ -203,6 +203,10 @@ const telefoneDigits = computed(() => {
   return (state.empresa.telefone || "").replace(/\D/g, "");
 });
 
+const whatsappDigits = computed(() => {
+  return (state.empresa.whatsapp || state.empresa.telefone || "").replace(/\D/g, "");
+});
+
 const telefoneComPais = computed(() => {
   if (!telefoneDigits.value) return "";
   return telefoneDigits.value.startsWith("55")
@@ -210,17 +214,24 @@ const telefoneComPais = computed(() => {
     : `55${telefoneDigits.value}`;
 });
 
+const whatsappComPais = computed(() => {
+  if (!whatsappDigits.value) return "";
+  return whatsappDigits.value.startsWith("55")
+    ? whatsappDigits.value
+    : `55${whatsappDigits.value}`;
+});
+
 const telefoneLabel = computed(() => {
   return state.empresa.telefone || "Telefone da loja";
 });
 
 const whatsappHref = computed(() => {
-  if (!telefoneComPais.value) return "/contato";
+  if (!whatsappComPais.value) return "/contato";
 
   const message = encodeURIComponent(
     "Olá! Vim pelo site da Casa Bonita Eletros e preciso de atendimento.",
   );
-  return `https://wa.me/${telefoneComPais.value}?text=${message}`;
+  return `https://wa.me/${whatsappComPais.value}?text=${message}`;
 });
 
 const phoneHref = computed(() => {
@@ -367,7 +378,7 @@ const infoList = [
 }
 
 .at_tag--dark {
-  color: $primary;
+  color: var(--primary);
   border-color: rgba(7, 22, 60, 0.18);
   background: rgba(7, 22, 60, 0.04);
 }
@@ -415,8 +426,8 @@ const infoList = [
   color: #111;
 
   &:hover {
-    background: $primary;
-    border-color: $primary;
+    background: var(--primary);
+    border-color: var(--primary);
     color: #fff;
   }
 }
@@ -433,8 +444,8 @@ const infoList = [
 }
 
 .at_btn--primary {
-  background: $primary;
-  border: 1px solid $primary;
+  background: var(--primary);
+  border: 1px solid var(--primary);
   color: #fff;
 
   &:hover {
@@ -484,7 +495,7 @@ const infoList = [
   text-decoration: none;
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
   }
 }
 
@@ -561,7 +572,7 @@ const infoList = [
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: $primary;
+  background: var(--primary);
   color: #fff;
   font-size: 22px;
 }
@@ -578,7 +589,7 @@ const infoList = [
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: $primary;
+  color: var(--primary);
   font-size: 14px;
   font-weight: 800;
   text-decoration: none;
@@ -640,7 +651,7 @@ const infoList = [
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $primary;
+    color: var(--primary);
     background: #f4f6fa;
     font-size: 18px;
   }
@@ -681,7 +692,7 @@ const infoList = [
 
   span {
     display: block;
-    color: $primary;
+    color: var(--primary);
     font-size: 13px;
     font-weight: 800;
     margin-bottom: 1rem;

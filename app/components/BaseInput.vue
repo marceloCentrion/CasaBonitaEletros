@@ -146,7 +146,7 @@ function handleInput(event: any) {
   }
 
   &:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 
   [data-password] & {

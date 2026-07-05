@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="row d-flex justify-content-center align-items-center my-5 w-100">
-      <NuxtImg src="/logo/blackLogo.svg" class="w-50" />
+      <NuxtImg src="/logo/logo.svg" class="w-50" />
     </div>
   </div>
 </template>
@@ -112,7 +112,7 @@ async function fetchInfo() {
   text-align: center;
 
   .bi {
-    color: $primary;
+    color: var(--primary);
   }
 }
 

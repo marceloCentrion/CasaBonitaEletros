@@ -23,9 +23,9 @@ button {
   transition: 0.3s;
 
   &:hover {
-    background-color: $primary;
+    background-color: var(--primary);
     color: white;
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 </style>
