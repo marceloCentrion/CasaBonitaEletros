@@ -382,7 +382,7 @@ async function carregarBanners() {
 
     if (!Array.isArray(val) || !val.length) throw new Error("Sem banners");
 
-    const bannersHero = val.filter((b) => b.nome?.toLowerCase() === "hero");
+    const bannersHero = val.filter((b) => b.categoria === "hero");
     state.banners = bannersHero.length
       ? bannersHero
       : [{ imagem: "/images/hero1.jpg" }];

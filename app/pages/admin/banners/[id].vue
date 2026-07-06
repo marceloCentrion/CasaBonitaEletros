@@ -8,18 +8,9 @@
         <div class="row">
           <div class="col-md-4">
             <label for="status">Categoria</label>
-            <select
-              @change="arrayPosition"
-              v-model="state.banner.categoria_id"
-              class="form-select"
-            >
-              <option
-                v-for="cat in state.categorias"
-                :key="cat.id"
-                :value="cat.id"
-              >
-                {{ cat.nome }}
-              </option>
+            <select v-model="state.banner.categoria" class="form-select">
+              <option value="hero">Hero</option>
+              <option value="secundario">Secundário</option>
             </select>
           </div>
           <div class="col-md-4">
@@ -108,7 +99,7 @@ export default {
     const state = reactive({
       banner: {
         id: "",
-        categoria_id: "",
+        categoria: "hero",
         nome: "",
         dimensoes: "",
       },
@@ -118,7 +109,6 @@ export default {
     const authStore = useAuthStore();
     const token = authStore.token;
     onMounted(() => {
-      fetchCat();
       if (router.currentRoute._value.params.id != undefined) {
         fetchBanner();
       }
@@ -130,7 +120,7 @@ export default {
           token,
         });
         state.banner.id = data.id;
-        state.banner.categoria_id = data.categoria_id;
+        state.banner.categoria = data.categoria;
         state.banner.nome = data.nome;
         state.banner.url = data.url;
         state.banner.dimensoes = data.dimensoes;
@@ -144,18 +134,9 @@ export default {
         console.log(error);
       }
     }
-    async function fetchCat() {
-      try {
-        const { data } = await services.banners.getAllCat({ token });
-        console.log(data);
-        state.categorias = data;
-      } catch (error) {
-        console.log(error);
-      }
-    }
     async function salvarBanner() {
       let dados = new FormData();
-      dados.append("categoria_id", state.banner.categoria_id);
+      dados.append("categoria", state.banner.categoria);
       dados.append("nome", state.banner.nome);
       dados.append("url", state.banner.url);
       dados.append("dimensoes", state.banner.dimensoes);

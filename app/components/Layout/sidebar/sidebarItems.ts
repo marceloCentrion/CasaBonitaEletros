@@ -3,7 +3,6 @@ import {
   GridDotsIcon,
   TagIcon,
   PictureInPictureIcon,
-  PaperclipIcon,
   BuildingStoreIcon,
   UserIcon,
   UsersIcon,
@@ -88,11 +87,6 @@ const sidebarItem: menu[] = [
     title: "Banners",
     icon: PictureInPictureIcon,
     to: "/admin/banners",
-  },
-  {
-    title: "Categoria Banners",
-    icon: PaperclipIcon,
-    to: "/admin/categoria-banners",
   },
   { header: "Outros" },
   {

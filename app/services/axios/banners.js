@@ -54,43 +54,6 @@ export default httpClient => ({
       data: response.data
     }
   },
-  saveCat: async (cat, token) => {
-    const headers = { "Authorization": "Bearer " + token, "Accept": "application/json", "Content-Type": "multipart/form-data" }
-    const response = await httpClient.post('/categoria-banners', cat, { headers });
-    console.log(cat)
-    return {
-      data: response.data
-    }
-  },
-  getAllCat: async ({ token }) => {
-    const headers = { "Authorization": "Bearer " + token, "Accept": "application/json" }
-    const response = await httpClient.get('/categoria-banners', { headers });
-    return {
-      data: response.data
-    }
-  },
-  getByIdCat: async ({ id, token }) => {
-    const headers = { "Authorization": "Bearer " + token, "Accept": "application/json" }
-    const response = await httpClient.get('/categoria-banners/' + id, { headers });
-    return {
-      data: response.data
-    }
-  },
-  updateCat: async (cat, token) => {
-    const headers = { "Authorization": "Bearer " + token, "Accept": "application/json" }
-    const response = await httpClient.put('/categoria-banners/' + cat.id, cat, { headers });
-    return {
-      data: response.data
-    }
-  },
-  deleteCat: async ({ id, token }) => {
-    const headers = { "Authorization": "Bearer " + token, "Accept": "application/json" }
-    const response = await httpClient.delete('/categoria-banners/' + id, { headers });
-    return {
-      data: response
-    }
-  },
-
   getBannersPorCategoria: async ({ id }) => {
     const response = await httpClient.get('/banners-por-categoria/' + id);
     return {

@@ -8,10 +8,9 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="status">Categoria do Banner</label>
-            <select @change="arrayPosition" v-model="state.banner.categoria_id" class="form-select">
-              <option v-for="cat in state.categorias" :key="cat.id" :value="cat.id">
-                {{ cat.nome }}
-              </option>
+            <select v-model="state.banner.categoria" class="form-select">
+              <option value="hero">Hero</option>
+              <option value="secundario">Secundário</option>
             </select>
           </div>
           <div class="col-md-6 mb-3">
@@ -75,7 +74,7 @@ export default {
     const state = reactive({
       banner: {
         id: "",
-        categoria_id: "",
+        categoria: "hero",
         nome: "",
       },
       imagem: {},
@@ -85,7 +84,6 @@ export default {
     const authStore = useAuthStore();
     const token = authStore.token;
     onMounted(() => {
-      fetchCat();
       if (router.currentRoute._value.params.id != undefined) {
         fetchBanner();
       }
@@ -104,19 +102,10 @@ export default {
         console.log(error);
       }
     }
-    async function fetchCat() {
-      try {
-        const { data } = await services.banners.getAllCat({ token });
-        console.log(data);
-        state.categorias = data;
-      } catch (error) {
-        console.log(error);
-      }
-    }
     async function salvarBanner() {
       if (state.isLoading) return;
 
-      if (!state.banner.categoria_id) {
+      if (!state.banner.categoria) {
         toast.error("O campo Categoria é obrigatório.");
         return;
       }
@@ -132,7 +121,7 @@ export default {
       state.isLoading = true;
       
       let dados = new FormData();
-      dados.append("categoria_id", state.banner.categoria_id);
+      dados.append("categoria", state.banner.categoria);
       dados.append("nome", state.banner.nome);
       if (state.imagem.file != null) {
         dados.append("imagem", state.imagem.file);

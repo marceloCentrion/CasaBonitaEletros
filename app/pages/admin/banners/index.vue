@@ -53,7 +53,7 @@
                     <tr v-for="banner in state.banners" :key="banner.id">
                       <td>{{ banner.id }}</td>
                       <td>{{ banner.nome }}</td>
-                      <td>{{ banner.categoria.nome }}</td>
+                      <td>{{ categoriaLabel(banner.categoria) }}</td>
                       <td>
                         <NuxtLink :to="'/admin/banners/' + banner.id">
                           <button title="Alterar" class="btn btn-primary">
@@ -173,6 +173,10 @@ export default {
       }
     }
 
+    function categoriaLabel(categoria) {
+      return categoria === "hero" ? "Hero" : categoria === "secundario" ? "Secundário" : categoria;
+    }
+
     function abrirModalDeletar(id, nome) {
       state.bannerIdParaDeletar = id;
       state.bannerNomeParaDeletar = nome;
@@ -212,6 +216,7 @@ export default {
       deletarBanner,
       abrirModalDeletar,
       fecharModalDeletar,
+      categoriaLabel,
     };
   },
 };
