@@ -332,45 +332,47 @@
               </table>
             </template>
 
-            <div v-if="arquivos3dBlocos.length >= 1" class="baixar_3d">
-              <span class="fw-bold">Blocos 3D</span>
-              <div>
-                <a
-                  v-if="arquivos3dBlocos.length === 1"
-                  :href="arquivos3dBlocos[0].arquivo"
-                  target="_blank"
-                  class="baixar_3d_btn"
-                >
-                  <i class="bi bi-download me-1"></i>
-                  Baixar {{ arquivos3dBlocos[0].tipo.toUpperCase() }}
-                </a>
-                <SecButton
-                  v-else
-                  style="font-size: 12px"
-                  @click="mostrarLista = true"
-                >
-                  <i class="bi bi-download me-1"></i>
-                  Baixar 3Ds
-                </SecButton>
+            <template v-if="aba.id === 'downloads'">
+              <div v-if="arquivos3dBlocos.length >= 1" class="baixar_3d">
+                <span class="fw-bold">Blocos 3D</span>
+                <div>
+                  <a
+                    v-if="arquivos3dBlocos.length === 1"
+                    :href="arquivos3dBlocos[0].arquivo"
+                    target="_blank"
+                    class="baixar_3d_btn"
+                  >
+                    <i class="bi bi-download me-1"></i>
+                    Baixar {{ extensaoArquivo(arquivos3dBlocos[0].arquivo) }}
+                  </a>
+                  <SecButton
+                    v-else
+                    style="font-size: 12px"
+                    @click="mostrarLista = true"
+                  >
+                    <i class="bi bi-download me-1"></i>
+                    Baixar 3Ds
+                  </SecButton>
+                </div>
               </div>
-            </div>
 
-            <div v-if="arquivos3dPdfs.length >= 1" class="baixar_3d baixar_manuais">
-              <span class="fw-bold">Gabaritos e Manuais</span>
-              <div class="manuais_lista">
-                <a
-                  v-for="pdf in arquivos3dPdfs"
-                  style="transition: .1.5s;"
-                  :key="pdf.id"
-                  :href="pdf.arquivo"
-                  target="_blank"
-                  class="baixar_3d_btn baixar_3d_btn--outline"
-                >
-                  <i class="bi bi-file-earmark-pdf me-1"></i>
-                  {{ 'Baixar PDF' }}
-                </a>
+              <div v-if="arquivos3dPdfs.length >= 1" class="baixar_3d baixar_manuais">
+                <span class="fw-bold">Gabaritos e Manuais</span>
+                <div class="manuais_lista">
+                  <a
+                    v-for="pdf in arquivos3dPdfs"
+                    style="transition: .1.5s;"
+                    :key="pdf.id"
+                    :href="pdf.arquivo"
+                    target="_blank"
+                    class="baixar_3d_btn baixar_3d_btn--outline"
+                  >
+                    <i class="bi bi-file-earmark-pdf me-1"></i>
+                    {{ 'Baixar PDF' }}
+                  </a>
+                </div>
               </div>
-            </div>
+            </template>
           </div>
         </div>
 
@@ -476,7 +478,7 @@
               <div class="d-flex align-items-center gap-2">
                 <i class="bi bi-file-earmark-zip text-secondary"></i>
                 <span style="font-size: 14px" class="text-dark">
-                  Arquivo #{{ item.id }} ({{ item.tipo.toUpperCase() }})
+                  Arquivo #{{ item.id }} ({{ extensaoArquivo(item.arquivo) }})
                 </span>
               </div>
               <a
@@ -558,11 +560,6 @@ watch(imagensUrls, () => {
   imagemAtiva.value = 0;
 });
 
-const abas = [
-  { id: "descricao", label: "Descrição" },
-  { id: "tecnico", label: "Características Técnicas" },
-];
-
 const parcelasOpcoes = computed(() =>
   Array.from({ length: produto.value?.parcelas ?? 1 }, (_, i) => ({
     n: i + 1,
@@ -571,15 +568,36 @@ const parcelasOpcoes = computed(() =>
 
 const arquivos3dBlocos = computed(() =>
   (arquivos3d.value ?? []).filter(
-    (a) => a.tipo?.toLowerCase() !== "pdf",
+    (a) => a.tipo?.toLowerCase() !== "gabarito",
   ),
 );
 
 const arquivos3dPdfs = computed(() =>
   (arquivos3d.value ?? []).filter(
-    (a) => a.tipo?.toLowerCase() === "pdf",
+    (a) => a.tipo?.toLowerCase() === "gabarito",
   ),
 );
+
+function extensaoArquivo(url) {
+  return (url?.split(".").pop() || "").toUpperCase();
+}
+
+const abas = computed(() => {
+  const lista = [
+    { id: "descricao", label: "Descrição" },
+    { id: "tecnico", label: "Características Técnicas" },
+  ];
+  if (arquivos3dBlocos.value.length >= 1 || arquivos3dPdfs.value.length >= 1) {
+    lista.push({ id: "downloads", label: "Downloads" });
+  }
+  return lista;
+});
+
+watch(abas, (novasAbas) => {
+  if (!novasAbas.some((aba) => aba.id === abaAtiva.value)) {
+    abaAtiva.value = "descricao";
+  }
+});
 
 function onMouseMove(e) {
   if (!imgWrapRef.value) return;
