@@ -46,7 +46,21 @@
               aria-controls="arquivo3d-tab-pane"
               aria-selected="false"
             >
-              Arquivos 3D
+              3D
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="gabarito-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#gabarito-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="gabarito-tab-pane"
+              aria-selected="false"
+            >
+              Gabarito
             </button>
           </li>
         </ul>
@@ -488,14 +502,14 @@
                       type="file"
                       class="form-control"
                       multiple
-                      accept=".glb,.gltf,.obj,.fbx,.stl,.ply,.3ds,.dae"
-                      @change="adicionarArquivos3D"
+                      accept=".skp,.zip,.7z,.glb,.gltf,.obj,.fbx,.stl,.ply,.3ds,.dae"
+                      @change="adicionarArquivos3D($event, '3d')"
                     />
                     <label for="file-input-3d">
                       <div
                         class="adicionar_imagem"
                         @dragover.prevent
-                        @drop.prevent="onDrop3D"
+                        @drop.prevent="onDrop3D($event, '3d')"
                       >
                         <div class="icones">
                           <i class="bi bi-box i1"></i>
@@ -507,8 +521,8 @@
                   </div>
                 </div>
                 <div
-                  v-for="(arquivo, index) in state.arquivos_3d"
-                  :key="index"
+                  v-for="arquivo in arquivos3dLista"
+                  :key="arquivo.id"
                   class="list-group-item arquivo3d-item"
                 >
                   <div class="arquivo3d-card">
@@ -518,7 +532,64 @@
                     }}</span>
                     <button
                       class="btn_remover"
-                      @click="removerArquivo3D(index)"
+                      @click="removerArquivo3D(arquivo)"
+                      type="button"
+                    >
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="tab-pane fade"
+            id="gabarito-tab-pane"
+            role="tabpanel"
+            aria-labelledby="gabarito-tab"
+            tabindex="0"
+          >
+            <div class="div_imagens">
+              <div class="list-group list-group-horizontal flex-wrap">
+                <div class="list-group-item">
+                  <div class="file-upload">
+                    <input
+                      id="file-input-gabarito"
+                      type="file"
+                      class="form-control"
+                      multiple
+                      accept=".pdf"
+                      @change="adicionarArquivos3D($event, 'gabarito')"
+                    />
+                    <label for="file-input-gabarito">
+                      <div
+                        class="adicionar_imagem"
+                        @dragover.prevent
+                        @drop.prevent="onDrop3D($event, 'gabarito')"
+                      >
+                        <div class="icones">
+                          <i class="bi bi-file-earmark-pdf i1"></i>
+                          <i class="bi bi-plus i2"></i>
+                        </div>
+                        <span class="drop-hint">Arraste ou clique</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  v-for="arquivo in arquivosGabaritoLista"
+                  :key="arquivo.id"
+                  class="list-group-item arquivo3d-item"
+                >
+                  <div class="arquivo3d-card">
+                    <i class="bi bi-file-earmark-pdf-fill arquivo3d-icon"></i>
+                    <span class="arquivo3d-nome" :title="arquivo.nome">{{
+                      arquivo.nome
+                    }}</span>
+                    <button
+                      class="btn_remover"
+                      @click="removerArquivo3D(arquivo)"
                       type="button"
                     >
                       <i class="bi bi-x-lg"></i>
@@ -710,28 +781,41 @@ export default {
       if (fileInput) fileInput.value = null;
     }
 
-    async function adicionarArquivos3D(event) {
+    const arquivos3dLista = computed(() =>
+      state.arquivos_3d.filter((a) => a.tipo !== "gabarito"),
+    );
+    const arquivosGabaritoLista = computed(() =>
+      state.arquivos_3d.filter((a) => a.tipo === "gabarito"),
+    );
+
+    async function adicionarArquivos3D(event, tipo) {
       for (let i = 0; i < event.target.files.length; i++) {
         const file = event.target.files[i];
-        state.arquivos_3d.push({ id: Date.now() + i, file, nome: file.name });
+        state.arquivos_3d.push({ id: Date.now() + i, file, nome: file.name, tipo });
       }
+      event.target.value = null;
     }
 
-    function onDrop3D(event) {
+    function onDrop3D(event, tipo) {
       const files = event.dataTransfer.files;
       for (let i = 0; i < files.length; i++) {
         state.arquivos_3d.push({
           id: Date.now() + i,
           file: files[i],
           nome: files[i].name,
+          tipo,
         });
       }
     }
 
-    function removerArquivo3D(index) {
+    function removerArquivo3D(arquivo) {
+      const index = state.arquivos_3d.indexOf(arquivo);
+      if (index === -1) return;
       state.arquivos_3d.splice(index, 1);
-      const fileInput = document.querySelector("#file-input-3d");
-      if (fileInput) fileInput.value = null;
+      const fileInput3d = document.querySelector("#file-input-3d");
+      if (fileInput3d) fileInput3d.value = null;
+      const fileInputGabarito = document.querySelector("#file-input-gabarito");
+      if (fileInputGabarito) fileInputGabarito.value = null;
     }
 
     async function salvarProduto() {
@@ -807,8 +891,10 @@ export default {
       formData.append("destaque2", state.produto.destaque2);
       formData.append("destaque3", state.produto.destaque3);
 
-      state.arquivos_3d.forEach((arquivo, i) => {
-        formData.append(`arquivos_3d[${i}]`, arquivo.file);
+      state.arquivos_3d.forEach((arquivo) => {
+        const campo =
+          arquivo.tipo === "gabarito" ? "arquivos_gabarito[]" : "arquivos_3d[]";
+        formData.append(campo, arquivo.file);
       });
 
       try {
@@ -853,6 +939,8 @@ export default {
       adicionarArquivos3D,
       onDrop3D,
       removerArquivo3D,
+      arquivos3dLista,
+      arquivosGabaritoLista,
       carregarURN,
       checkMove,
       fetchCategoria,
