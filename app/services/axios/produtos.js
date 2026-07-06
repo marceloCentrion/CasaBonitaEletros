@@ -112,10 +112,11 @@ export default httpClient => ({
     }
   },
 
-  buscarPorCategoriaStatus: async (status, categoria_id) => {
+  buscarPorCategoriaStatus: async (status, categoria_id, marca_id) => {
     const response = await httpClient.post('/produtos-por-filtros', {
       status,
-      categoria_id
+      categoria_id,
+      marca_id
     });
     return {
       data: response.data

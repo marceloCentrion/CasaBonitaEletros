@@ -31,7 +31,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-4 d-flex justify-content-start">
+                <div class="col-3 d-flex justify-content-start">
                   <div style="width: 100%">
                     <label class="lbl_white">Categoria</label>
                     <select class="form-select" v-model="categoria_id">
@@ -46,7 +46,22 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-6 d-flex justify-content-start">
+                <div class="col-3 d-flex justify-content-start">
+                  <div style="width: 100%">
+                    <label class="lbl_white">Marca</label>
+                    <select class="form-select" v-model="marca_id">
+                      <option value="">Todas as Marcas</option>
+                      <option
+                        :value="marca.id"
+                        v-for="marca in marcas"
+                        :key="marca.id"
+                      >
+                        {{ marca.nome }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-4 d-flex justify-content-start">
                   <div style="width: 100%">
                     <label class="lbl_white">Busca</label>
                     <input
@@ -279,8 +294,10 @@ const isLoadingStore = useIsLoading();
 
 const produtos = ref([]);
 const categorias = ref([]);
+const marcas = ref([]);
 const nome_produto = ref("");
 const categoria_id = ref("");
+const marca_id = ref("");
 const status = ref("");
 
 const modalErro = ref({
@@ -353,10 +370,20 @@ async function fetchCategorias() {
   }
 }
 
+async function fetchMarcas() {
+  try {
+    const { data } = await services.marcas.marcasAtivas();
+    marcas.value = data.data ?? data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function buscaProdutos() {
   if (nome_produto.value.length > 0) {
     status.value = "";
     categoria_id.value = "";
+    marca_id.value = "";
     try {
       isLoadingStore.start();
       const { data } = await services.produtos.buscarProduto(
@@ -370,12 +397,17 @@ async function buscaProdutos() {
     } finally {
       isLoadingStore.stop();
     }
-  } else if (status.value !== "" || categoria_id.value !== "") {
+  } else if (
+    status.value !== "" ||
+    categoria_id.value !== "" ||
+    marca_id.value !== ""
+  ) {
     try {
       isLoadingStore.start();
       const { data } = await services.produtos.buscarPorCategoriaStatus(
         status.value,
         categoria_id.value,
+        marca_id.value,
       );
       produtos.value = data.data ?? data;
       if (data.current_page) setPaginacao(data);
@@ -448,6 +480,7 @@ async function deletarProduto() {
 onMounted(() => {
   fetchProdutos();
   fetchCategorias();
+  fetchMarcas();
 });
 </script>
 
