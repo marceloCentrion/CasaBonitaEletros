@@ -18,6 +18,18 @@
             <input id="nome" type="text" class="form-control" v-model="state.banner.nome" />
           </div>
           <div class="col-md-6 mb-3">
+            <label for="titulo">Título</label>
+            <input id="titulo" type="text" class="form-control" v-model="state.banner.titulo" maxlength="255" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="tag">Tag</label>
+            <input id="tag" type="text" class="form-control" v-model="state.banner.tag" maxlength="100" />
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" class="form-control" v-model="state.banner.descricao" maxlength="1000" rows="3"></textarea>
+          </div>
+          <div class="col-md-6 mb-3">
             <label>Imagem do Banner (Desktop)</label>
             <input id="bannerFile" type="file" class="form-control" @change="adicionarImagem" />
           </div>
@@ -123,6 +135,9 @@ export default {
       let dados = new FormData();
       dados.append("categoria", state.banner.categoria);
       dados.append("nome", state.banner.nome);
+      dados.append("titulo", state.banner.titulo ?? "");
+      dados.append("tag", state.banner.tag ?? "");
+      dados.append("descricao", state.banner.descricao ?? "");
       if (state.imagem.file != null) {
         dados.append("imagem", state.imagem.file);
       }

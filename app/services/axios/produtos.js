@@ -112,12 +112,13 @@ export default httpClient => ({
     }
   },
 
-  buscarPorCategoriaStatus: async (status, categoria_id, marca_id) => {
+  buscarPorCategoriaStatus: async (status, categoria_id, marca_id, token) => {
+    const headers = { "Authorization": "Bearer " + token, "Accept": "application/json" }
     const response = await httpClient.post('/produtos-por-filtros', {
       status,
       categoria_id,
       marca_id
-    });
+    }, { headers });
     return {
       data: response.data
     }
@@ -137,8 +138,8 @@ export default httpClient => ({
     }
   },
 
-  buscarPorFaixaPrecoGrupo: async ({ preco_inicial, preco_final }) => {
-    const response = await httpClient.post('/produtos-por-faixa-preco', { preco_inicial, preco_final });
+  buscarPorFaixaPrecoGrupo: async ({ preco_inicial, preco_final, urn }) => {
+    const response = await httpClient.post('/produtos-por-faixa-grupo', { preco_inicial, preco_final, urn });
     return {
       data: response.data
     }

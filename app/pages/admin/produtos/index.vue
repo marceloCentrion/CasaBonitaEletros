@@ -408,6 +408,7 @@ async function buscaProdutos() {
         status.value,
         categoria_id.value,
         marca_id.value,
+        token,
       );
       produtos.value = data.data ?? data;
       if (data.current_page) setPaginacao(data);

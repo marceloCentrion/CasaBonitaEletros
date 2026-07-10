@@ -21,8 +21,8 @@ export const RED_THEME = {
   colors: {
     background: '#F4F5FA',
     surface: '#FFFFFF',
-    primary: '#E30613',
-    'primary-darken-1': '#B90510',
+    primary: '#B8000A',
+    'primary-darken-1': '#960008',
     secondary: '#74788D',
     'secondary-darken-1': '#5C6180',
     error: '#FF5252',
@@ -41,9 +41,9 @@ export const THEME_CSS_VARIABLES = {
     selection: '#3a67ee',
   },
   RED_THEME: {
-    primary: '#e30613',
-    primaryDarken1: '#b90510',
-    selection: '#e30613',
+    primary: '#b8000a',
+    primaryDarken1: '#960008',
+    selection: '#b8000a',
   },
 } as const;
 

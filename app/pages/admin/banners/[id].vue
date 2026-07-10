@@ -34,6 +34,40 @@
         </div>
         <div class="row">
           <div class="col-md-4">
+            <label for="titulo">Título</label>
+            <input
+              id="titulo"
+              type="text"
+              class="form-control"
+              v-model="state.banner.titulo"
+              maxlength="255"
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="tag">Tag</label>
+            <input
+              id="tag"
+              type="text"
+              class="form-control"
+              v-model="state.banner.tag"
+              maxlength="100"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label for="descricao">Descrição</label>
+            <textarea
+              id="descricao"
+              class="form-control"
+              v-model="state.banner.descricao"
+              maxlength="1000"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
             <label>Banner</label>
             <input type="file" class="form-control" @change="adicionarImagem" />
           </div>
@@ -122,7 +156,10 @@ export default {
         state.banner.id = data.id;
         state.banner.categoria = data.categoria;
         state.banner.nome = data.nome;
-        state.banner.url = data.url;
+        state.banner.url = data.url === "null" ? "" : data.url;
+        state.banner.titulo = data.titulo;
+        state.banner.tag = data.tag;
+        state.banner.descricao = data.descricao;
         state.banner.dimensoes = data.dimensoes;
         if (data.imagem != null) {
           state.imagem.imagem = data.imagem;
@@ -138,8 +175,11 @@ export default {
       let dados = new FormData();
       dados.append("categoria", state.banner.categoria);
       dados.append("nome", state.banner.nome);
-      dados.append("url", state.banner.url);
-      dados.append("dimensoes", state.banner.dimensoes);
+      dados.append("url", state.banner.url ?? "");
+      dados.append("titulo", state.banner.titulo ?? "");
+      dados.append("tag", state.banner.tag ?? "");
+      dados.append("descricao", state.banner.descricao ?? "");
+      dados.append("dimensoes", state.banner.dimensoes ?? "");
       if (state.imagem.file != null) {
         dados.append("imagem", state.imagem.file);
       }

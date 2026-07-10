@@ -387,8 +387,10 @@ async function carregarBanners() {
       ? bannersHero
       : [{ imagem: "/images/hero1.jpg" }];
 
-    const novidade = val.find((b) => b.nome === "Novidade");
-    if (novidade) state.bannerDestaque = novidade;
+    const secundario = val
+      .filter((b) => b.categoria === "secundario")
+      .sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0))[0];
+    if (secundario) state.bannerDestaque = secundario;
   } catch (err) {
     console.error("Erro banners:", err);
     state.banners = [{ imagem: "/images/hero1.jpg" }];

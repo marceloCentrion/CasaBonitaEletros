@@ -54,13 +54,6 @@ export default httpClient => ({
       data: response.data
     }
   },
-  getBannersPorCategoria: async ({ id }) => {
-    const response = await httpClient.get('/banners-por-categoria/' + id);
-    return {
-      data: response.data
-    }
-  },
-
   getBannerTop: async () => {
     const response = await httpClient.get('/banners-site');
     return {
