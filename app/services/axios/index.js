@@ -35,6 +35,8 @@ import estoquesService from './estoques';
 import imagensProdutosService from './imagens_produtos';
 import variacoes from './variacoes';
 import usuarios from './usuarios';
+import configuracoes from './configuracoes';
+import orcamentos from './orcamentos';
 
 const API_ENVS = {
   production: '',
@@ -111,4 +113,6 @@ export default {
   imagensProdutos: imagensProdutosService(httpClient),
   variacoes: variacoes(httpClient),
   usuarios: usuarios(httpClient),
+  configuracoes: configuracoes(httpClient),
+  orcamentos: orcamentos(httpClient),
 }

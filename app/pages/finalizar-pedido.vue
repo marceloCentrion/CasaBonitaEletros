@@ -1477,6 +1477,7 @@ state.valores_produtos.total_desconto =
             valor_total: state.carrinho.valor_total,
             preco_frete: state.frete_selecionado.valor_frete,
             tipo_frete: state.frete_selecionado.nome,
+            frete_id: state.tipo_frete_selecionado,
             valor_produtos: state.carrinho.valor_produtos,
             tipo_pagamento,
             estimativa_entrega: state.frete_selecionado.dias_entrega,

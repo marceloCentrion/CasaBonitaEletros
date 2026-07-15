@@ -23,6 +23,12 @@ export default httpClient => ({
     }
   },
 
+  gerarPdf: async ({ id, token }) => {
+    const headers = { "Authorization": "Bearer " + token, "Accept": "application/pdf" }
+    const response = await httpClient.get('/pedidos/' + id + '/pdf', { headers, responseType: 'blob' });
+    return { data: response.data }
+  },
+
 
   delete: async ({ id, token }) => {
     const headers = { "Authorization": "Bearer " + token, "Accept": "application/json" }

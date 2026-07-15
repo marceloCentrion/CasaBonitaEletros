@@ -55,7 +55,7 @@
       </div>
 
       <div class="mv_actions">
-        <SecButton :disabled="adicionado" @click="handleAdicionarCarrinho">
+        <SecButton v-if="vendasAtivas" :disabled="adicionado" @click="handleAdicionarCarrinho">
           <template v-if="adicionado">
             Adicionado!
             <i class="bi bi-check-lg" aria-hidden="true"></i>
@@ -66,7 +66,13 @@
           </template>
         </SecButton>
 
+        <SecButton v-else @click="adicionarAoOrcamento">
+          Adicionar ao orçamento
+          <i class="bi bi-cart3 ms-2" aria-hidden="true"></i>
+        </SecButton>
+
         <a
+          v-if="vendasAtivas"
           :href="linkWhatsApp"
           target="_blank"
           rel="noopener noreferrer"
@@ -96,9 +102,11 @@ const props = defineProps({
 const carrinho = useCarrinhoStore();
 const adicionado = ref(false);
 const { empresa, carregarEmpresaSite } = useSiteData();
+const { vendasAtivas, carregarModoOperacao } = useModoOperacao();
 
 onMounted(() => {
   carregarEmpresaSite();
+  carregarModoOperacao();
 });
 
 function formatPreco(valor) {
@@ -126,7 +134,7 @@ const linkWhatsApp = computed(() => {
   const numeroDigits = numeroBase.replace(/\D/g, "");
   const numero = numeroDigits.startsWith("55") ? numeroDigits : `55${numeroDigits}`;
   const msg = encodeURIComponent(
-    `Olá! Tenho interesse no produto: ${props.produto.nome} - ${formatPreco(props.produto.preco)}`,
+    `Olá! Gostaria de solicitar um orçamento para: ${props.produto.nome} - ${formatPreco(props.produto.preco)}`,
   );
   return numeroDigits ? `https://wa.me/${numero}?text=${msg}` : "/contato";
 });
@@ -332,5 +340,23 @@ function handleFavoritar() {
     line-height: 1;
     display: block;
   }
+}
+
+function adicionarAoOrcamento() {
+  carrinho.adicionarItem(props.produto);
+  navigateTo('/carrinho');
+}
+
+.mv_btn_orcamento {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 6px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
 }
 </style>

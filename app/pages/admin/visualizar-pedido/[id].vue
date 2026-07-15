@@ -18,6 +18,9 @@
           </ol>
         </nav>
         <h4>Dados do Pedido</h4>
+        <button class="btn btn-outline-secondary mb-3" @click="gerarPdf">
+          <i class="bi bi-file-earmark-pdf me-1"></i> Gerar PDF
+        </button>
         <div class="row">
           <div class="col-md-6">
             <p>
@@ -400,6 +403,23 @@ export default {
       }
     }
 
+    async function gerarPdf() {
+      try {
+        const { data } = await services.pedido.gerarPdf({
+          id: router.currentRoute._value.params.id,
+          token,
+        });
+        const url = URL.createObjectURL(data);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `pedido-${router.currentRoute._value.params.id}.pdf`;
+        link.click();
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        alert('Não foi possível gerar o PDF do pedido.');
+      }
+    }
+
     async function adicionarNotaFiscal(event) {
       try {
         const nota = event.target.files[0];
@@ -419,6 +439,7 @@ export default {
       router,
       state,
       upStatus,
+      gerarPdf,
       adicionarNotaFiscal,
     };
   },

@@ -191,6 +191,7 @@
 
             <div class="prod_actions">
               <SecButton
+                v-if="vendasAtivas"
                 class="prod_btn_comprar"
                 @click="comprar"
                 aria-label="Comprar agora"
@@ -200,11 +201,11 @@
 
               <OutlineButton
                 class="prod_btn_whatsapp"
-                aria-label="Compre pelo WhatsApp"
-                @click="abrirWhatsApp(produto)"
+                :aria-label="vendasAtivas ? 'Compre pelo WhatsApp' : 'Solicite orçamento pelo WhatsApp'"
+                @click="vendasAtivas ? abrirWhatsApp(produto) : solicitarOrcamento()"
               >
                 <i class="bi bi-whatsapp"></i>
-                Compre pelo WhatsApp
+                {{ vendasAtivas ? 'Compre pelo WhatsApp' : 'Adicionar ao orçamento' }}
               </OutlineButton>
             </div>
 
@@ -523,7 +524,9 @@ useHead(() => ({
 
 const isLoading = useIsLoading();
 const checkout = useCheckoutStore();
+const carrinho = useCarrinhoStore();
 const { empresa, carregarEmpresaSite } = useSiteData();
+const { vendasAtivas, carregarModoOperacao } = useModoOperacao();
 
 definePageMeta({ layout: "site" });
 
@@ -633,7 +636,7 @@ watch(fullscreenAtivo, (val) => {
 });
 
 onMounted(async () => {
-  await Promise.all([fetchProduto(), carregarEmpresaSite()]);
+  await Promise.all([fetchProduto(), carregarEmpresaSite(), carregarModoOperacao()]);
   window.addEventListener('keydown', handleKeydown);
 });
 
@@ -674,6 +677,10 @@ function decrementar() {
 }
 
 function comprar() {
+  if (!vendasAtivas.value) {
+    abrirWhatsApp(produto.value);
+    return;
+  }
   checkout.iniciar(
     {
       id: produto.value.id,
@@ -690,6 +697,18 @@ function comprar() {
   navigateTo("/checkout");
 }
 
+function solicitarOrcamento() {
+  const item = {
+    id: produto.value.id,
+    nome: produto.value.nome,
+    urn: produto.value.urn,
+    preco: produto.value.tem_desconto === 'SIM' ? produto.value.preco_desconto : produto.value.preco,
+    imagens: produto.value.imagens,
+  };
+  for (let i = 0; i < quantidade.value; i++) carrinho.adicionarItem(item);
+  navigateTo('/carrinho');
+}
+
 function adicionarCarrinho(p) {
   console.log("Adicionado ao carrinho:", p);
 }
@@ -699,7 +718,7 @@ function gerarLinkWhatsApp(p) {
   const numeroDigits = numeroBase.replace(/\D/g, "");
   const numero = numeroDigits.startsWith("55") ? numeroDigits : `55${numeroDigits}`;
   const msg = encodeURIComponent(
-    `Olá! Tenho interesse no produto: ${p.nome} - ${formatPreco(p.preco)}`,
+    `Olá! Gostaria de solicitar um orçamento para: ${p.nome} - ${formatPreco(p.preco)}`,
   );
   return numeroDigits ? `https://wa.me/${numero}?text=${msg}` : "/contato";
 }

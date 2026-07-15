@@ -4,7 +4,7 @@
       <div class="row g-4 align-items-start">
         <section class="col-12 col-lg-8" aria-label="Itens do carrinho">
           <h1 class="fs-4 fw-bold text-dark mb-4" id="cart_heading">
-            Seu Carrinho
+            {{ vendasAtivas ? 'Seu Carrinho' : 'Produtos para orçamento' }}
           </h1>
 
           <div
@@ -46,10 +46,10 @@
             style="top: 100px"
           >
             <h2 class="fs-6 fw-bold text-dark mb-4" id="summary_heading">
-              Resumo do seu pedido
+              {{ vendasAtivas ? 'Resumo do seu pedido' : 'Resumo do orçamento' }}
             </h2>
 
-            <div class="mb-3">
+            <div v-if="vendasAtivas" class="mb-3">
               <label for="input_cep" class="form-label small fw-bold text-dark">
                 Calcule o Frete
               </label>
@@ -79,7 +79,7 @@
               </p>
             </div>
 
-            <div class="mb-3">
+            <div v-if="vendasAtivas" class="mb-3">
               <label
                 for="input_cupom"
                 class="form-label small fw-bold text-dark"
@@ -145,7 +145,7 @@
             >
               {{ formatPreco(totalFinal) }}
             </p>
-            <p class="text-secondary mb-4">
+            <p v-if="vendasAtivas" class="text-secondary mb-4">
               ou em até 10x de {{ formatPreco(totalFinal / 10) }}
             </p>
 
@@ -154,7 +154,7 @@
               @click="finalizar"
               :disabled="carrinho.itens.length === 0"
             >
-              Finalizar compra
+              {{ vendasAtivas ? 'Finalizar compra' : 'Solicitar orçamento' }}
             </SecButton>
           </div>
         </aside>
@@ -175,6 +175,9 @@ useHead(() => ({
 const router = useRouter();
 
 const carrinho = useCarrinhoStore();
+const { vendasAtivas, carregarModoOperacao } = useModoOperacao();
+
+onMounted(carregarModoOperacao);
 
 const cep = ref("");
 const cupom = ref("");
@@ -238,7 +241,7 @@ async function aplicarCupom() {
 }
 
 function finalizar() {
-  navigateTo("/checkout");
+  navigateTo(vendasAtivas.value ? '/checkout' : '/solicitar-orcamento');
 }
 </script>
 
