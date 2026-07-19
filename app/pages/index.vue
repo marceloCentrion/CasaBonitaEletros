@@ -60,11 +60,34 @@
           <picture class="slide_picture" :style="banner.url ? 'cursor: pointer' : ''">
             <source
               v-if="banner.imagem_cel"
-              :srcset="banner.imagem_cel"
+              type="image/avif"
               media="(max-width: 600px)"
+              :srcset="`${img(banner.imagem_cel, { width: 400, format: 'avif' })} 400w, ${img(banner.imagem_cel, { width: 600, format: 'avif' })} 600w`"
+              sizes="100vw"
             />
-            <NuxtImg
-              :src="banner.imagem || '/placeholder-default.png'"
+            <source
+              v-if="banner.imagem_cel"
+              type="image/webp"
+              media="(max-width: 600px)"
+              :srcset="`${img(banner.imagem_cel, { width: 400, format: 'webp' })} 400w, ${img(banner.imagem_cel, { width: 600, format: 'webp' })} 600w`"
+              sizes="100vw"
+            />
+            
+            <source
+              type="image/avif"
+              media="(min-width: 601px)"
+              :srcset="`${img(banner.imagem || '/placeholder-default.png', { width: 1024, format: 'avif' })} 1024w, ${img(banner.imagem || '/placeholder-default.png', { width: 1280, format: 'avif' })} 1280w, ${img(banner.imagem || '/placeholder-default.png', { width: 1920, format: 'avif' })} 1920w`"
+              sizes="100vw"
+            />
+            <source
+              type="image/webp"
+              media="(min-width: 601px)"
+              :srcset="`${img(banner.imagem || '/placeholder-default.png', { width: 1024, format: 'webp' })} 1024w, ${img(banner.imagem || '/placeholder-default.png', { width: 1280, format: 'webp' })} 1280w, ${img(banner.imagem || '/placeholder-default.png', { width: 1920, format: 'webp' })} 1920w`"
+              sizes="100vw"
+            />
+
+            <img
+              :src="img(banner.imagem || '/placeholder-default.png', { width: 1280, format: 'webp' })"
               class="slide_img"
               :alt="banner.titulo || 'Banner promocional'"
               :fetchpriority="index === 0 ? 'high' : 'auto'"
@@ -315,6 +338,7 @@ import BrandsCarousel from "@/components/Brandscarousel.vue";
 
 const router = useRouter();
 const { carregarGruposSite } = useSiteData();
+const img = useImage();
 
 useHead({ title: "Casa Bonita Eletros" });
 definePageMeta({ layout: "site" });

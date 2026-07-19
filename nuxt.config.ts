@@ -157,5 +157,21 @@ export default defineNuxtConfig({
       "@": path.resolve(__dirname, "app"),
       "~": path.resolve(__dirname, "app"),
     },
+    routeRules: {
+      "/_ipx/**": { headers: { "Cache-Control": "public, max-age=31536000, immutable" } }
+    },
+  },
+
+  image: {
+    domains: ["backend.casabonitaeletros.com.br"],
+    format: ["avif", "webp"],
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1920,
+    },
   },
 });
