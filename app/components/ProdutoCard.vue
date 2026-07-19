@@ -147,6 +147,11 @@ const isFavorito = computed(() => favoritosStore.isFavorito(props.produto.id));
 function handleFavoritar() {
   favoritosStore.toggleFavorito(props.produto);
 }
+
+function adicionarAoOrcamento() {
+  carrinho.adicionarItem(props.produto);
+  navigateTo("/carrinho");
+}
 </script>
 
 <style scoped lang="scss">
@@ -340,11 +345,6 @@ function handleFavoritar() {
     line-height: 1;
     display: block;
   }
-}
-
-function adicionarAoOrcamento() {
-  carrinho.adicionarItem(props.produto);
-  navigateTo('/carrinho');
 }
 
 .mv_btn_orcamento {
