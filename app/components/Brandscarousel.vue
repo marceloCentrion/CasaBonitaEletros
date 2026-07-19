@@ -16,6 +16,7 @@
               :src="marca.logo"
               :alt="marca.nome"
               class="marca_logo"
+              loading="lazy"
             />
           </NuxtLink>
         </div>

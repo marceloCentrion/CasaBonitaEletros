@@ -24,6 +24,7 @@
         "
         :alt="produto.nome"
         class="mv_img"
+        loading="lazy"
       />
     </NuxtLink>
 

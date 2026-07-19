@@ -57,14 +57,9 @@
         :wrapAround="true"
       >
         <slide v-for="(banner, index) in state.banners" :key="banner.id" @click="irParaLink(banner)">
+          <!-- AVIF removido do hero: a codificação on-the-fly no servidor custava ~2,5s
+               por requisição no caminho crítico do LCP. Reavaliar após cache + pré-aquecimento. -->
           <picture class="slide_picture" :style="banner.url ? 'cursor: pointer' : ''">
-            <source
-              v-if="banner.imagem_cel"
-              type="image/avif"
-              media="(max-width: 600px)"
-              :srcset="`${img(banner.imagem_cel, { width: 400, format: 'avif' })} 400w, ${img(banner.imagem_cel, { width: 600, format: 'avif' })} 600w`"
-              sizes="100vw"
-            />
             <source
               v-if="banner.imagem_cel"
               type="image/webp"
@@ -72,16 +67,9 @@
               :srcset="`${img(banner.imagem_cel, { width: 400, format: 'webp' })} 400w, ${img(banner.imagem_cel, { width: 600, format: 'webp' })} 600w`"
               sizes="100vw"
             />
-            
-            <source
-              type="image/avif"
-              media="(min-width: 601px)"
-              :srcset="`${img(banner.imagem || '/placeholder-default.png', { width: 1024, format: 'avif' })} 1024w, ${img(banner.imagem || '/placeholder-default.png', { width: 1280, format: 'avif' })} 1280w, ${img(banner.imagem || '/placeholder-default.png', { width: 1920, format: 'avif' })} 1920w`"
-              sizes="100vw"
-            />
             <source
               type="image/webp"
-              media="(min-width: 601px)"
+              :media="banner.imagem_cel ? '(min-width: 601px)' : null"
               :srcset="`${img(banner.imagem || '/placeholder-default.png', { width: 1024, format: 'webp' })} 1024w, ${img(banner.imagem || '/placeholder-default.png', { width: 1280, format: 'webp' })} 1280w, ${img(banner.imagem || '/placeholder-default.png', { width: 1920, format: 'webp' })} 1920w`"
               sizes="100vw"
             />
@@ -148,6 +136,7 @@
                 :src="grupo.imagem || '/placeholder-default.png'"
                 :alt="grupo.nome"
                 class="cat_img"
+                loading="lazy"
               />
               <span class="cat_label">{{ grupo.nome }}</span>
             </NuxtLink>
@@ -160,7 +149,7 @@
   <section id="section_produtos" aria-labelledby="prod_heading">
     <div class="mv_container">
       <div class="prod_header">
-        <h2 class="mv_title" style="margin-bottom:0" id="prod_heading">Produtos da Casa Bonita Eletros</h2>
+        <h1 class="mv_title" style="margin-bottom:0" id="prod_heading">Produtos da Casa Bonita Eletros</h1>
         <nav
           @click="router.push('/produtos')"
           class="prod_filters"
@@ -206,6 +195,7 @@
           :src="state.bannerDestaque.imagem || '/placeholder-default.png'"
           :alt="state.bannerDestaque.titulo"
           class="bd_img"
+          loading="lazy"
         />
         <div class="bd_overlay">
           <div class="bd_content">
@@ -306,6 +296,7 @@
                   :src="produto.imagem || '/placeholder-default.png'"
                   :alt="produto.nome"
                   class="combo_img"
+                  loading="lazy"
                 />
               </div>
               <span class="combo_produto_nome">{{ produto.nome }}</span>
@@ -323,7 +314,12 @@
 
   <section id="newsletter" class="newsletter_section">
     <div class="newsletter_img_wrap">
-      <NuxtImg src="/images/fogaoNewsletter.jpeg" class="newsletter_img" />
+      <NuxtImg
+        src="/images/fogaoNewsletter.jpeg"
+        class="newsletter_img"
+        alt=""
+        loading="lazy"
+      />
     </div>
     <Newsletter />
   </section>
@@ -340,7 +336,6 @@ const router = useRouter();
 const { carregarGruposSite } = useSiteData();
 const img = useImage();
 
-useHead({ title: "Casa Bonita Eletros" });
 definePageMeta({ layout: "site" });
 
 const currentSlide = ref(0);
@@ -359,7 +354,6 @@ const state = reactive({
   destaque2: [],
   destaque3: [],
   produtosFiltrados: [],
-  todosAtivos: [],
   bannerDestaque: {
     titulo: "Refrigerador Inox French Door",
     tag: "NOVIDADE EXCLUSIVA",
@@ -381,11 +375,11 @@ const state = reactive({
 });
 
 const { data: homePayload } = await useAsyncData('home-data', async () => {
-  const [bannersRes, gruposRes, produtosHomeRes, produtosAtivosRes, comboRes] = await Promise.allSettled([
+  const [bannersRes, gruposRes, produtosHomeRes, vitrineRes, comboRes] = await Promise.allSettled([
     services.banners.getBannerTop(),
     carregarGruposSite(),
     services.produtos.getAllSite(),
-    services.produtos.getProdutosAtivos(),
+    services.produtos.getVitrineHome(),
     services.combos.getAllDestaques()
   ]);
 
@@ -396,7 +390,6 @@ const { data: homePayload } = await useAsyncData('home-data', async () => {
     destaque2: [],
     destaque3: [],
     produtosFiltrados: [],
-    todosAtivos: [],
     bannerDestaque: {
       titulo: "Refrigerador Inox French Door",
       tag: "NOVIDADE EXCLUSIVA",
@@ -438,9 +431,14 @@ const { data: homePayload } = await useAsyncData('home-data', async () => {
     payload.destaque3 = produtosHomeRes.value.data.destaque3 || [];
   }
 
-  if (produtosAtivosRes.status === 'fulfilled' && produtosAtivosRes.value?.data?.length) {
-    payload.todosAtivos = produtosAtivosRes.value.data;
-    payload.produtosFiltrados = produtosAtivosRes.value.data;
+  if (vitrineRes.status === 'fulfilled' && vitrineRes.value?.data?.length) {
+    payload.produtosFiltrados = vitrineRes.value.data;
+  } else {
+    // Fallback enquanto o endpoint /produtos-vitrine-home não estiver publicado no backend
+    try {
+      const ativos = await services.produtos.getProdutosAtivos();
+      if (ativos?.data?.length) payload.produtosFiltrados = ativos.data;
+    } catch { /* seção fica vazia */ }
   }
 
   if (comboRes.status === 'fulfilled' && comboRes.value?.data) {
@@ -479,6 +477,49 @@ const { data: homePayload } = await useAsyncData('home-data', async () => {
 if (homePayload.value) {
   Object.assign(state, homePayload.value);
 }
+
+// Preload do primeiro banner (elemento LCP): mesmas URLs/srcset/sizes dos <source>
+// WebP do <picture>, com media queries espelhadas para não duplicar download.
+const heroPreloadLinks = (() => {
+  const banner = homePayload.value?.banners?.[0];
+  if (!banner) return [];
+  const links = [];
+  const desktopSrc = banner.imagem || "/placeholder-default.png";
+
+  if (banner.imagem_cel) {
+    links.push({
+      rel: "preload",
+      as: "image",
+      media: "(max-width: 600px)",
+      imagesrcset: `${img(banner.imagem_cel, { width: 400, format: "webp" })} 400w, ${img(banner.imagem_cel, { width: 600, format: "webp" })} 600w`,
+      imagesizes: "100vw",
+      fetchpriority: "high",
+    });
+  }
+
+  links.push({
+    rel: "preload",
+    as: "image",
+    ...(banner.imagem_cel ? { media: "(min-width: 601px)" } : {}),
+    imagesrcset: `${img(desktopSrc, { width: 1024, format: "webp" })} 1024w, ${img(desktopSrc, { width: 1280, format: "webp" })} 1280w, ${img(desktopSrc, { width: 1920, format: "webp" })} 1920w`,
+    imagesizes: "100vw",
+    fetchpriority: "high",
+  });
+
+  return links;
+})();
+
+useHead({
+  title: "Casa Bonita Eletros",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Eletrodomésticos premium para sua cozinha na Casa Bonita Eletros: fornos, coifas, cooktops, refrigeradores e combos exclusivos com frete grátis e parcelamento.",
+    },
+  ],
+  link: heroPreloadLinks,
+});
 
 function formatPreco(valor) {
   return new Intl.NumberFormat("pt-BR", {

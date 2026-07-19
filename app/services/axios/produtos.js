@@ -84,6 +84,12 @@ export default httpClient => ({
       data: response.data
     }
   },
+  getVitrineHome: async () => {
+    const response = await httpClient.get('/produtos-vitrine-home');
+    return {
+      data: response.data
+    }
+  },
   getAllProdutoCat: async (categoria_id) => {
     const response = await httpClient.get('/produtos-por-categoria/' + categoria_id);
     return {

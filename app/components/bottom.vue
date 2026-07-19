@@ -8,7 +8,12 @@
             class="footer_logo"
             aria-label="Casa Bonita Eletros - ir para home"
           >
-            <NuxtImg src="/logo/logo.svg" style="max-width: 140px" />
+            <NuxtImg
+              src="/logo/logo.svg"
+              style="max-width: 140px"
+              alt="Casa Bonita Eletros"
+              loading="lazy"
+            />
           </NuxtLink>
           <p class="footer_slogan">
             Tecnologia, design e sofisticação para transformar sua cozinha.
@@ -124,6 +129,7 @@
                 :src="foto.src"
                 :alt="foto.alt || 'Post do Instagram'"
                 class="footer_ig_img"
+                loading="lazy"
                 @error="onIgImgError"
               />
               <span class="footer_ig_overlay" aria-hidden="true">
@@ -145,11 +151,13 @@
             src="/images/pagamentos/visa.svg"
             alt="Visa"
             class="payment_icon"
+            loading="lazy"
           />
           <img
             src="/images/pagamentos/mastercard.svg"
             alt="Mastercard"
             class="payment_icon"
+            loading="lazy"
           />
         </div>
       </div>

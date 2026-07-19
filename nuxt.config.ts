@@ -158,6 +158,9 @@ export default defineNuxtConfig({
       "~": path.resolve(__dirname, "app"),
     },
     routeRules: {
+      // Home é 100% pública: personalização (login/carrinho/favoritos) é hidratada
+      // no cliente via localStorage, nunca renderizada no SSR.
+      "/": { swr: 600 },
       "/_ipx/**": { headers: { "Cache-Control": "public, max-age=31536000, immutable" } }
     },
   },
