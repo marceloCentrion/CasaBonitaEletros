@@ -138,19 +138,22 @@
               </div>
             </dl>
 
-            <p class="small fw-semibold text-dark mb-1">Total:</p>
-            <p
-              class="summary_total_valor fw-bold text-dark lh-1 mb-1"
-              aria-live="polite"
-            >
-              {{ formatPreco(totalFinal) }}
-            </p>
+            <div class="summary_total d-flex align-items-baseline justify-content-between gap-3 mb-1">
+              <p class="small fw-semibold text-dark mb-0">Total:</p>
+              <p
+                class="summary_total_valor fw-bold text-dark lh-1 mb-0 text-nowrap"
+                aria-live="polite"
+              >
+                {{ formatPreco(totalFinal) }}
+              </p>
+            </div>
             <p v-if="vendasAtivas" class="text-secondary mb-4">
               ou em até 10x de {{ formatPreco(totalFinal / 10) }}
             </p>
 
             <SecButton
               type="button"
+              :class="{ summary_action_orcamento: !vendasAtivas }"
               @click="finalizar"
               :disabled="carrinho.itens.length === 0"
             >
@@ -252,5 +255,9 @@ function finalizar() {
 
 .summary_total_valor {
   font-size: 2rem;
+}
+
+.summary_action_orcamento {
+  margin-top: 5px;
 }
 </style>

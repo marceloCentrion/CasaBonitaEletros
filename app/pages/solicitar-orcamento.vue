@@ -9,7 +9,7 @@
     <form v-if="itens.length && !sucesso" @submit.prevent="enviar">
       <div class="row g-3">
         <div class="col-md-6"><label class="form-label">Nome</label><input v-model="form.nome" required class="form-control"></div>
-        <div class="col-md-6"><label class="form-label">Telefone / WhatsApp</label><input v-model="form.telefone" required class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Telefone / WhatsApp</label><input v-model="form.telefone" v-maska data-maska="['(##) ####-####', '(##) # ####-####']" required type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" class="form-control"></div>
         <div class="col-md-6"><label class="form-label">E-mail</label><input v-model="form.email" required type="email" class="form-control"></div>
         <div class="col-12"><label class="form-label">Mensagem</label><textarea v-model="form.observacao" class="form-control" rows="4"></textarea></div>
         <div class="col-12"><button :disabled="enviando" class="btn btn-primary" type="submit">{{ enviando ? 'Enviando...' : 'Enviar solicitação' }}</button></div>

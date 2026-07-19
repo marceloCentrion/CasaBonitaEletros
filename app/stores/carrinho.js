@@ -22,7 +22,7 @@ export const useCarrinhoStore = defineStore(
         itens.value.push({
           id: produto.id,
           nome: produto.nome,
-          codigo: produto.codigo || produto.urn || String(produto.id),
+          codigo: produto.ref || produto.codigo || produto.urn || String(produto.id),
           preco: produto.preco,
           quantidade: 1,
           disponivel: true,

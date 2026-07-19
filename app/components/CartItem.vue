@@ -99,7 +99,7 @@ function formatPreco(valor) {
 
 .cart_item {
   display: grid;
-  grid-template-columns: 80px 1fr auto auto auto;
+  grid-template-columns: 80px minmax(0, 1fr) auto auto auto;
   align-items: center;
   gap: 1.25rem;
   border-left: none;
@@ -132,6 +132,16 @@ function formatPreco(valor) {
 
 .cart_item_nome {
   font-size: 14px;
+}
+
+.cart_item_info {
+  min-width: 0;
+}
+
+.cart_item_codigo {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cart_item_qty {
@@ -186,7 +196,7 @@ function formatPreco(valor) {
 
 @media (max-width: 600px) {
   .cart_item {
-    grid-template-columns: 64px 1fr auto;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
     grid-template-rows: auto auto;
     row-gap: 0.75rem;
 

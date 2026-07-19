@@ -50,6 +50,11 @@ const sidebarItem: menu[] = [
     icon: BasketIcon,
     to: "/admin/pedidos",
   },
+  {
+    title: "Orçamentos",
+    icon: BasketIcon,
+    to: "/admin/orcamentos",
+  },
   { header: "Produtos" },
   {
     title: "Produtos",
