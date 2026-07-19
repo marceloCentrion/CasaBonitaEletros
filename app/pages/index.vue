@@ -56,7 +56,7 @@
         :transition="4000"
         :wrapAround="true"
       >
-        <slide v-for="banner in state.banners" :key="banner.id" @click="irParaLink(banner)">
+        <slide v-for="(banner, index) in state.banners" :key="banner.id" @click="irParaLink(banner)">
           <picture class="slide_picture" :style="banner.url ? 'cursor: pointer' : ''">
             <source
               v-if="banner.imagem_cel"
@@ -67,6 +67,8 @@
               :src="banner.imagem || '/placeholder-default.png'"
               class="slide_img"
               :alt="banner.titulo || 'Banner promocional'"
+              :fetchpriority="index === 0 ? 'high' : 'auto'"
+              :loading="index === 0 ? 'eager' : 'lazy'"
             />
           </picture>
         </slide>
@@ -354,129 +356,104 @@ const state = reactive({
   },
 });
 
-onMounted(() => {
-  Promise.all([
-    carregarBanners(),
-    carregarGrupos(),
-    carregarProdutosHome(),
-    carregarProdutosAtivos(),
-    carregarComboEspecial(),
+const { data: homePayload } = await useAsyncData('home-data', async () => {
+  const [bannersRes, gruposRes, produtosHomeRes, produtosAtivosRes, comboRes] = await Promise.allSettled([
+    services.banners.getBannerTop(),
+    carregarGruposSite(),
+    services.produtos.getAllSite(),
+    services.produtos.getProdutosAtivos(),
+    services.combos.getAllDestaques()
   ]);
-});
 
-// activeBanner — usado apenas pelo banner antigo (comentado). Manter para eventual restauração.
-// const activeBanner = computed(() => {
-//   if (!Array.isArray(state.banners) || !state.banners.length) {
-//     return { titulo: "", descricao: "" };
-//   }
-//   return (
-//     state.banners[currentSlide.value] ||
-//     state.banners[0] || { titulo: "", descricao: "" }
-//   );
-// });
+  let payload = {
+    banners: [],
+    grupos: [],
+    destaque1: [],
+    destaque2: [],
+    destaque3: [],
+    produtosFiltrados: [],
+    todosAtivos: [],
+    bannerDestaque: {
+      titulo: "Refrigerador Inox French Door",
+      tag: "NOVIDADE EXCLUSIVA",
+      descricao: "Descubra a fusão perfeita entre design sofisticado e tecnologia de ponta. Amplo espaço interno, acabamento em inox e funcionalidades inteligentes para preservar seus alimentos com estilo.",
+      imagem: "/images/produtos/refrigerador-banner.jpg",
+      url: "/produto/refrigerador-french-door",
+    },
+    comboEspecial: {
+      id: null,
+      titulo: "O Combo Perfeito para sua Cozinha",
+      descricao: "Transforme sua cozinha com o combo perfeito: <strong>coifa moderna</strong> para eliminar odores e <strong>forno de embutir</strong> para preparar receitas com precisão.",
+      preco: 0,
+      parcelas: 1,
+      valor_parcela: null,
+      produtos: [],
+    }
+  };
 
-async function carregarBanners() {
-  try {
-    const res = await services.banners.getBannerTop();
-    const val = res.data ?? [];
-
-    if (!Array.isArray(val) || !val.length) throw new Error("Sem banners");
-
+  if (bannersRes.status === 'fulfilled' && bannersRes.value?.data) {
+    const val = bannersRes.value.data;
     const bannersHero = val.filter((b) => b.categoria === "hero");
-    state.banners = bannersHero.length
-      ? bannersHero
-      : [{ imagem: "/images/hero1.jpg" }];
+    payload.banners = bannersHero.length ? bannersHero : [{ imagem: "/images/hero1.jpg" }];
 
     const secundario = val
       .filter((b) => b.categoria === "secundario")
       .sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0))[0];
-    if (secundario) state.bannerDestaque = secundario;
-  } catch (err) {
-    console.error("Erro banners:", err);
-    state.banners = [{ imagem: "/images/hero1.jpg" }];
+    if (secundario) payload.bannerDestaque = secundario;
+  } else {
+    payload.banners = [{ imagem: "/images/hero1.jpg" }];
   }
-}
 
-async function carregarGrupos() {
-  try {
-    const val = await carregarGruposSite();
-    if (val?.length) state.grupos = val;
-  } catch (err) {
-    console.error("Erro grupos:", err);
-    state.grupos = [];
+  if (gruposRes.status === 'fulfilled' && gruposRes.value?.length) {
+    payload.grupos = gruposRes.value;
   }
-}
 
-async function carregarProdutosHome() {
-  try {
-    const res = await services.produtos.getAllSite();
-    const val = res.data ?? {};
-    state.destaque1 = val.destaque1 || [];
-    state.destaque2 = val.destaque2 || [];
-    state.destaque3 = val.destaque3 || [];
-  } catch (err) {
-    console.error("Erro produtos home:", err);
-    state.destaque1 = [];
-    state.destaque2 = [];
-    state.destaque3 = [];
+  if (produtosHomeRes.status === 'fulfilled' && produtosHomeRes.value?.data) {
+    payload.destaque1 = produtosHomeRes.value.data.destaque1 || [];
+    payload.destaque2 = produtosHomeRes.value.data.destaque2 || [];
+    payload.destaque3 = produtosHomeRes.value.data.destaque3 || [];
   }
-}
 
-async function carregarProdutosAtivos() {
-  try {
-    const res = await services.produtos.getProdutosAtivos();
-    const lista = res.data ?? [];
-    if (Array.isArray(lista) && lista.length) {
-      state.todosAtivos = lista;
-      state.produtosFiltrados = lista;
-    } else {
-      state.todosAtivos = [];
-      state.produtosFiltrados = [];
-    }
-  } catch (err) {
-    console.error("Erro produtos ativos:", err);
-    state.todosAtivos = [];
-    state.produtosFiltrados = [];
+  if (produtosAtivosRes.status === 'fulfilled' && produtosAtivosRes.value?.data?.length) {
+    payload.todosAtivos = produtosAtivosRes.value.data;
+    payload.produtosFiltrados = produtosAtivosRes.value.data;
   }
-}
 
-async function carregarComboEspecial() {
-  try {
-    const res = await services.combos.getAllDestaques();
-    const lista = res.data?.data ?? res.data ?? [];
-
+  if (comboRes.status === 'fulfilled' && comboRes.value?.data) {
+    const lista = comboRes.value.data.data ?? comboRes.value.data ?? [];
     const ativos = lista.filter(
-      (c) => c.status === "ATIVO" && c.destaque === "SIM",
+      (c) => c.status === "ATIVO" && c.destaque === "SIM"
     );
-    if (!ativos.length) return;
-
-    const combo = ativos[Math.floor(Math.random() * ativos.length)];
-
-    state.comboEspecial = {
-      id: combo.id,
-      titulo: combo.descricao,
-      descricao: combo.descricao,
-      preco: combo.valor_total,
-      parcelas: combo.parcelas ?? 1,
-      valor_parcela: combo.valor_parcela ?? null,
-      produtos: [
-        {
-          id: combo.produto1.id,
-          nome: combo.produto1.nome,
-          imagem:
-            combo.produto1.imagens?.[0]?.imagem ?? "/placeholder-default.png",
-        },
-        {
-          id: combo.produto2.id,
-          nome: combo.produto2.nome,
-          imagem:
-            combo.produto2.imagens?.[0]?.imagem ?? "/placeholder-default.png",
-        },
-      ],
-    };
-  } catch (err) {
-    console.error("Erro combos:", err);
+    if (ativos.length) {
+      const combo = ativos[0];
+      payload.comboEspecial = {
+        id: combo.id,
+        titulo: combo.descricao,
+        descricao: combo.descricao,
+        preco: combo.valor_total,
+        parcelas: combo.parcelas ?? 1,
+        valor_parcela: combo.valor_parcela ?? null,
+        produtos: [
+          {
+            id: combo.produto1.id,
+            nome: combo.produto1.nome,
+            imagem: combo.produto1.imagens?.[0]?.imagem ?? "/placeholder-default.png",
+          },
+          {
+            id: combo.produto2.id,
+            nome: combo.produto2.nome,
+            imagem: combo.produto2.imagens?.[0]?.imagem ?? "/placeholder-default.png",
+          },
+        ],
+      };
+    }
   }
+
+  return payload;
+});
+
+if (homePayload.value) {
+  Object.assign(state, homePayload.value);
 }
 
 function formatPreco(valor) {
@@ -528,6 +505,12 @@ function adicionarCarrinho(produto) {
   position: relative;
   width: 100%;
   line-height: 0;
+  aspect-ratio: 3.3103;
+  background-color: #f0f0f0;
+
+  @media (max-width: 600px) {
+    aspect-ratio: 1.3386;
+  }
 }
 
 :deep(.carousel),

@@ -57,9 +57,11 @@ const httpMelhorEnvio = axios.create({
 })
 
 httpClient.interceptors.request.use((config) => {
-  const storage = useAuthStore();
-  if (storage.token) {
-    config.headers.Authorization = `Bearer ${storage.token}`;
+  if (import.meta.client) {
+    const storage = useAuthStore();
+    if (storage.token) {
+      config.headers.Authorization = `Bearer ${storage.token}`;
+    }
   }
   return config;
 });
