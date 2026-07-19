@@ -7,7 +7,13 @@
 
           <!-- Logo -->
           <NuxtLink to="/" class="header-main__logo">
-            <NuxtImg src="/logo/logo.svg" class="logo" alt="Casa Bonita Eletros" />
+            <NuxtImg
+              src="/logo/logo.svg"
+              class="logo"
+              alt="Casa Bonita Eletros"
+              width="220"
+              height="69"
+            />
           </NuxtLink>
 
           <!-- Busca centralizada (desktop) -->
@@ -397,7 +403,11 @@ watch(
 }
 
 .logo {
+  /* aspect-ratio + height:auto reservam o espaço antes do SVG carregar (CLS) */
   width: 220px;
+  height: auto;
+  aspect-ratio: 1024 / 320;
+  display: block;
 }
 
 /* ── Busca centralizada ── */

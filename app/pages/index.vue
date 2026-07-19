@@ -196,6 +196,8 @@
           :alt="state.bannerDestaque.titulo"
           class="bd_img"
           loading="lazy"
+          format="webp"
+          sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:1216px"
         />
         <div class="bd_overlay">
           <div class="bd_content">
@@ -592,9 +594,17 @@ function adicionarCarrinho(produto) {
 }
 
 .slide_img {
+  /* box fixo no mesmo ratio do wrapper: variação de proporção da imagem
+     enviada pelo admin não desloca o layout (CLS) */
   width: 100%;
   height: auto;
+  aspect-ratio: 3.3103;
+  object-fit: cover;
   display: block;
+
+  @media (max-width: 600px) {
+    aspect-ratio: 1.3386;
+  }
 }
 
 :deep(.carousel__pagination) {

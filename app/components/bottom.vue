@@ -10,8 +10,10 @@
           >
             <NuxtImg
               src="/logo/logo.svg"
-              style="max-width: 140px"
+              style="max-width: 140px; height: auto; aspect-ratio: 1024 / 320"
               alt="Casa Bonita Eletros"
+              width="140"
+              height="44"
               loading="lazy"
             />
           </NuxtLink>
